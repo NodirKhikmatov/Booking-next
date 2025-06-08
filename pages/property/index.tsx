@@ -2,17 +2,18 @@ import { Box, Button, Menu, MenuItem, Pagination, Stack, Typography } from '@mui
 import { Direction, Message } from '../../libs/enums/common.enum';
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { useMutation, useQuery } from '@apollo/client';
 
 import Filter from '../../libs/components/property/Filter';
 import { GET_PROPERTIES } from '../../apollo/user/query';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import { LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { NextPage } from 'next';
 import { PropertiesInquiry } from '../../libs/types/property/property.input';
 import { Property } from '../../libs/types/property/property';
 import PropertyCard from '../../libs/components/property/PropertyCard';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
@@ -36,6 +37,8 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	const [filterSortName, setFilterSortName] = useState('New');
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
 
 	const {
 		loading: getPropertiesLoading,
