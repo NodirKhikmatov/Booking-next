@@ -1,7 +1,8 @@
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import { Box, Button, Checkbox, Stack, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Stack, Typography } from '@mui/material';
+import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
 import { GET_COMMENTS, GET_PROPERTIES, GET_PROPERTY } from '../../apollo/user/query';
 import React, { ChangeEvent, useEffect, useState } from 'react';
@@ -16,7 +17,6 @@ import { Direction } from '../../libs/enums/common.enum';
 import EastIcon from '@mui/icons-material/East';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import Link from 'next/link';
 import { Message } from '@mui/icons-material';
 import { Pagination as MuiPagination } from '@mui/material';

@@ -39,7 +39,6 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	/** APOLLO REQUESTS **/
 	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 
-
 	const {
 		loading: getPropertiesLoading,
 		data: getPropertiesData,
@@ -82,7 +81,9 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
 	}, [router]);
 
-	useEffect(() => {}, [searchFilter]);
+	useEffect(() => {
+		getPropertiesRefetch({ input: searchFilter }).then();
+	}, [searchFilter]);
 
 	/** HANDLERS **/
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {

@@ -1,14 +1,19 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { NextPage } from 'next';
-import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import { Stack, Box, Button, Pagination } from '@mui/material';
+import { Box, Button, Pagination, Stack } from '@mui/material';
 import { Menu, MenuItem } from '@mui/material';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { useMutation, useQuery } from '@apollo/client';
+
 import AgentCard from '../../libs/components/common/AgentCard';
-import { useRouter } from 'next/router';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GET_AGENTS } from '../../apollo/user/query';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import { LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
 import { Member } from '../../libs/types/member/member';
+import { NextPage } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
+import { useRouter } from 'next/router';
+import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -32,6 +37,24 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 	const [searchText, setSearchText] = useState<string>('');
 
 	/** APOLLO REQUESTS **/
+
+	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
+
+	const {
+		loading: getAgentsLoading,
+		data: getAgentsData,
+		error: getAgentsError,
+		refetch: getAgentsRefetch,
+	} = useQuery(GET_AGENTS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setAgents(data?.getAgents?.list);
+			setTotal(data?.getAgents?.metaCounter[0]?.total);
+		},
+	});
+
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (router.query.input) {
@@ -83,6 +106,21 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 			scroll: false,
 		});
 		setCurrentPage(value);
+	};
+
+	const likeMemberHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Messages.error2);
+			await likeTargetMember({
+				variables: { input: id },
+			});
+			await getAgentsRefetch({ input: searchFilter });
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('Error:likePropertyHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
 	};
 
 	if (device === 'mobile') {
@@ -139,7 +177,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 							</div>
 						) : (
 							agents.map((agent: Member) => {
-								return <AgentCard agent={agent} key={agent._id} />;
+								return <AgentCard agent={agent} key={agent._id} likeMemberHandler={likeMemberHandler} />;
 							})
 						)}
 					</Stack>

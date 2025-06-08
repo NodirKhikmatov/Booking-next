@@ -1,21 +1,23 @@
-import React from 'react';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Stack, Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
+
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import IconButton from '@mui/material/IconButton';
 import Link from 'next/link';
 import { REACT_APP_API_URL } from '../../config';
-import IconButton from '@mui/material/IconButton';
+import React from 'react';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 
 interface AgentCardProps {
 	agent: any;
+	likeMemberHandler: any;
 }
 
 const AgentCard = (props: AgentCardProps) => {
-	const { agent } = props;
+	const { agent, likeMemberHandler } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const imagePath: string = agent?.memberImage
@@ -64,7 +66,7 @@ const AgentCard = (props: AgentCardProps) => {
 							<RemoveRedEyeIcon />
 						</IconButton>
 						<Typography className="view-cnt">{agent?.memberViews}</Typography>
-						<IconButton color={'default'}>
+						<IconButton color={'default'} onClick={() => likeMemberHandler(user, agent?._id)}>
 							{agent?.meLiked && agent?.meLiked[0]?.myFavorite ? (
 								<FavoriteIcon color={'primary'} />
 							) : (
