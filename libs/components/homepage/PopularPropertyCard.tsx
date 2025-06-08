@@ -1,12 +1,13 @@
-import React from 'react';
-import { Stack, Box, Divider, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
+
 import IconButton from '@mui/material/IconButton';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Property } from '../../types/property/property';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { REACT_APP_API_URL } from '../../config';
-import { useRouter } from 'next/router';
+import React from 'react';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
 
 interface PopularPropertyCardProps {
@@ -86,36 +87,37 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 					) : (
 						''
 					)}
-
-					<div className={'price'}>${property.propertyPrice}</div>
 				</Box>
 				<Box component={'div'} className={'info'}>
 					<strong className={'title'}>{property.propertyTitle}</strong>
-					<p className={'desc'}>{property.propertyAddress}</p>
+					<br />
+					<div className={'price'}>${property.propertyPrice} / Night</div>
+
 					<div className={'options'}>
 						<div>
-							<img src="/img/icons/bed.svg" alt="" />
+							<img src="/img/icons/expand.svg" alt="" />
+							<span>
+								{property?.propertySquare} m<sup>2</sup>{' '}
+							</span>
+						</div>
+						<div>
+							<img src="/img/icons/bed.png " alt="" />
 							<span>{property?.propertyBeds} bed</span>
 						</div>
 						<div>
-							<img src="/img/icons/room.svg" alt="" />
+							<img src="/img/icons/room.png" alt="" />
 							<span>{property?.propertyRooms} rooms</span>
 						</div>
 						<div>
-							<img src="/img/icons/expand.svg" alt="" />
-							<span>{property?.propertySquare} m2</span>
+							<img src="/img/icons/bathroom.png" alt="" />
+							<span>{property?.propertyBathroom} bathroom</span>
+						</div>
+						<div>
+							<img src="/img/icons/wife.png" alt="" />
+							<span>{property?.propertyFacility} </span>
 						</div>
 					</div>
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
-					<div className={'bott'}>
-						<p>{property?.propertyRent ? 'rent' : 'sale'}</p>
-						<div className="view-like-box">
-							<IconButton color={'default'}>
-								<RemoveRedEyeIcon />
-							</IconButton>
-							<Typography className="view-cnt">{property?.propertyViews}</Typography>
-						</div>
-					</div>
 				</Box>
 			</Stack>
 		);

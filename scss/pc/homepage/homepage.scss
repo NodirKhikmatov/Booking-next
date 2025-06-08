@@ -1,4 +1,4 @@
-@import "~@fontsource/barlow-condensed/index.css";
+@import '~@fontsource/barlow-condensed/index.css';
 
 #pc-wrap {
 	.home-page {
@@ -34,7 +34,7 @@
 					color: #333;
 					font-family: $font;
 					font-size: 54px;
-                    
+
 					margin-top: 20px;
 					font-style: normal;
 					font-weight: 400;
@@ -131,11 +131,11 @@
 			.container {
 				flex-direction: column;
 				align-items: center;
-				 width: 100%;
+				width: 100%;
 				// background: #000;
 
 				.section-title {
-					display: inline-flex;	
+					display: inline-flex;
 					align-items: center;
 					font-family: 'Barlow Condensed', sans-serif;
 					gap: 8px;
@@ -143,7 +143,6 @@
 					letter-spacing: 7.8px;
 					font-weight: 30;
 					color: #181a20;
-
 				}
 
 				.section-title img {
@@ -155,8 +154,8 @@
 					position: relative;
 					margin-top: 64px;
 					display: flex;
-		
 					flex-direction: row;
+
 					.empty-list {
 						width: 100%;
 						height: 280px;
@@ -183,7 +182,7 @@
 						display: flex;
 						flex-direction: column;
 						transition: transform 0.3s;
-						
+
 						.card-img {
 							position: relative;
 							width: 450px;
@@ -192,36 +191,77 @@
 							border-radius: 12px 12px 0px 0px;
 							cursor: pointer;
 
-							
-						.property-offer-box {
-  position: absolute;
-  bottom: 50px;
-  left: 0;
-  padding: 12px 20px;
-  background-color:rgba(235, 235, 235, 0.9);
-  color: #181a20;
-  border-radius: 6px;
-  padding: 16px 24px; 
-  min-width: 260px;    
-  min-height: 50px;   
-  display: flex;
-  align-items: center;
-  visibility: visible;
-  justify-content: center;
-  font-size: 25px;
-  font-weight: 200;
-  z-index: 2;
-  transition: background-color 0.9s ease-out, color 0.4s ease;
-}
+							.property-offer-box {
+								position: absolute;
+								bottom: 50px;
+								left: 0;
+								padding: 12px 20px;
+								background-color: rgba(235, 235, 235, 0.9);
+								color: #181a20;
+								border-radius: 6px;
+								padding: 16px 24px;
+								min-width: 260px;
+								min-height: 50px;
+								display: flex;
+								align-items: center;
+								visibility: visible;
+								justify-content: center;
+								font-size: 25px;
+								font-weight: 200;
+								z-index: 2;
+								transition: color 0.01s ease;
+							}
 
-/* Hover effect: background fills with #352f27 and text becomes white */
-.property-offer-box:hover {
-  background-color:   #aa8453;
-  color: white;
+							.property-offer-box::before {
+								content: '';
+								position: absolute;
+								left: 0;
+								bottom: 0;
+								width: 100%;
+								height: 100%;
+								background-color: #aa8453;
+								transform: scaleY(0);
+								transform-origin: bottom;
+								z-index: -1;
+								animation-fill-mode: forwards;
+							}
 
-}
+							.property-offer-box:hover::before {
+								animation: fillBox 0.2s forwards ease-out;
+							}
 
-							
+							.property-offer-box:hover {
+								animation: changeTextColor 0.1s forwards ease-out;
+							}
+
+							.property-offer-box > * {
+								position: relative;
+								z-index: 2;
+							}
+
+							/* Keyframe for background fill */
+							@keyframes fillBox {
+								0% {
+									transform: scaleY(0);
+								}
+								100% {
+									transform: scaleY(1);
+									color: w;
+								}
+							}
+
+							/* Keyframe for text color change */
+							@keyframes changeTextColor {
+								0% {
+									color: black;
+								}
+								50% {
+									color: #ddd; /* Optional intermediate step */
+								}
+								100% {
+									color: white;
+								}
+							}
 						}
 						.info {
 							padding: 20px 22px 17px;
@@ -324,24 +364,65 @@
 		}
 		.popular-properties {
 			padding: 132px 0px 94px;
-			width: 100%;
-			height: 816px;
+			width: auto;
+			height: 100%;
 			display: flex;
-			flex-direction: row;
+			flex-direction: column;
+			grid-gap: 3rem;
 			background: #f6f6f6;
+
 			.container {
+				display: flex;
 				flex-direction: column;
+				width: 66%;
 				align-items: center;
+				box-sizing: border-box;
+				padding: 4rem;
+
+				.section-title {
+					display: inline-flex;
+					align-items: center;
+					font-family: 'Barlow Condensed', sans-serif;
+					gap: 8px;
+					font-size: 24px;
+					letter-spacing: 7.8px;
+					font-weight: 30;
+					color: #181a20;
+				}
+
+				.section-title img {
+					width: 44px;
+					height: auto;
+					vertical-align: middle;
+				}
+
+				p {
+					max-width: 800px;
+					text-align: center;
+					word-break: break-word;
+
+					span {
+						color: #333;
+						font-family: $font;
+						font-size: 54px;
+						font-style: normal;
+						margin-top: 15px;
+						font-weight: 400;
+						line-height: 26px;
+					}
+				}
+
 				.card-box {
 					margin-top: 34px;
 					width: 100%;
-					height: auto;
+					height: 550px;
 					display: flex;
 					flex-direction: row;
 					justify-content: space-between;
+
 					.popular-property-swiper {
-						width: 100%;
-						height: 425px;
+						// width: 100%;
+						// height: 425px;
 						display: flex;
 						flex-direction: row;
 						.popular-property-slide {
@@ -354,7 +435,7 @@
 					.popular-card-box {
 						position: relative;
 						width: 400px;
-						height: 425px;
+						height: 900px;
 						display: flex;
 						flex-direction: column;
 						transition: transform 0.3s, opacity 0.3s;
@@ -365,7 +446,7 @@
 						.card-img {
 							position: relative;
 							width: 100%;
-							height: 203px;
+							height: 235.875px;
 							background-size: cover;
 							border-radius: 12px 12px 0px 0px;
 							cursor: pointer;
@@ -393,20 +474,6 @@
 									text-transform: uppercase;
 								}
 							}
-							div.price {
-								position: absolute;
-								padding: 8px 12px;
-								left: 20px;
-								bottom: 20px;
-								border-radius: 6px;
-								background: #fff;
-								color: #181a20;
-								font-family: $font;
-								font-size: 15px;
-								font-style: normal;
-								font-weight: 600;
-								line-height: normal;
-							}
 						}
 						.info {
 							padding: 20px 22px 17px;
@@ -418,18 +485,34 @@
 							border-top: none;
 							background: #fff;
 							box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+
 							.title {
 								overflow: hidden;
 								color: #181a20;
 								text-overflow: ellipsis;
 								white-space: nowrap;
 								font-family: $font;
-								font-size: 15px;
+								font-size: 20px;
 								font-style: normal;
 								font-weight: 600;
 								line-height: normal;
 								text-transform: capitalize;
 								cursor: pointer;
+							}
+							:hover {
+								color: #b18e60;
+							}
+							.price {
+								padding: 8px 0px;
+								border-radius: 6px;
+								background: #fff;
+								color: #181a20;
+								font-family: $font;
+								font-size: 15px;
+								font-style: normal;
+								font-weight: 600;
+								line-height: normal;
+								color: #aa8453;
 							}
 							.desc {
 								margin-top: 5px;
@@ -445,21 +528,28 @@
 							}
 							.options {
 								margin-top: 15px;
-								display: flex;
-								flex-direction: row;
+								display: grid;
+								grid-template-columns: auto auto;
 								justify-content: space-between;
+
 								div {
-									display: flex;
-									flex-direction: row;
+									padding: 5px;
+									margin-top: 10px;
+
+									sup {
+										top: -5px;
+										position: relative;
+										vertical-align: baseline;
+									}
 									img {
 										margin-right: 5px;
-										width: 17px;
-										height: 17px;
+										width: 27px;
+										height: 27px;
 									}
 									span {
-										color: #181a20;
+										color: #818181;
 										font-family: $font;
-										font-size: 13px;
+										font-size: 16px;
 										font-style: normal;
 										font-weight: 400;
 										line-height: normal;
@@ -544,6 +634,11 @@
 					margin-top: 64px;
 					display: flex;
 					flex-direction: row;
+					.swiper-container {
+						height: 100%;
+						display: flex;
+						flex-direction: column;
+					}
 					.top-property-swiper {
 						width: 100%;
 						height: 400px;

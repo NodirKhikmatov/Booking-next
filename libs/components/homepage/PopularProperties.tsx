@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { Stack, Box } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
-import WestIcon from '@mui/icons-material/West';
+import { Box, Stack } from '@mui/material';
+import React, { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import EastIcon from '@mui/icons-material/East';
-import PopularPropertyCard from './PopularPropertyCard';
-import { Property } from '../../types/property/property';
+import { GET_PROPERTIES } from '../../../apollo/user/query';
 import Link from 'next/link';
+import PopularPropertyCard from './PopularPropertyCard';
 import { PropertiesInquiry } from '../../types/property/property.input';
+import { Property } from '../../types/property/property';
+import WestIcon from '@mui/icons-material/West';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { useQuery } from '@apollo/client';
 
 interface PopularPropertiesProps {
 	initialInput: PropertiesInquiry;
@@ -20,6 +23,19 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 	const [popularProperties, setPopularProperties] = useState<Property[]>([]);
 
 	/** APOLLO REQUESTS **/
+	const {
+		loading: getPropertiesLoading,
+		data: getPropertiesData,
+		error: getPropertiesError,
+		refetch: getPropertiesRefetch,
+	} = useQuery(GET_PROPERTIES, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setPopularProperties(data?.getProperties?.list);
+		},
+	});
 	/** HANDLERS **/
 
 	if (!popularProperties) return null;
@@ -57,15 +73,21 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Popular properties</span>
-							<p>Popularity is based on views</p>
+							<span className="section-title">
+								<img src="icons/before.png" alt="" width="24" height="24" />
+								CUSTOMER SERVICES
+							</span>
+							<p>
+								<span>Book your stay and relaxin</span>
+								<br /> <br />
+								<span>luxury hotel</span>
+							</p>
 						</Box>
+
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'}>
-								<Link href={'/property'}>
-									<span>See All Categories</span>
-								</Link>
-								<img src="/img/icons/rightup.svg" alt="" />
+								{/* <Link href={'/property'}><span>See All Categories</span></Link> */}
+								{/* <img src="/img/icons/rightup.svg" alt="" /> */}
 							</div>
 						</Box>
 					</Stack>

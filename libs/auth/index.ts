@@ -1,9 +1,10 @@
+import { LOGIN, SIGN_UP } from '../../apollo/user/mutation';
+
+import { CustomJwtPayload } from '../types/customJwtPayload';
 import decodeJWT from 'jwt-decode';
 import { initializeApollo } from '../../apollo/client';
-import { userVar } from '../../apollo/store';
-import { CustomJwtPayload } from '../types/customJwtPayload';
 import { sweetMixinErrorAlert } from '../sweetAlert';
-import { LOGIN, SIGN_UP } from '../../apollo/user/mutation';
+import { userVar } from '../../apollo/store';
 
 export function getJwtToken(): any {
 	if (typeof window !== 'undefined') {
@@ -156,6 +157,7 @@ export const updateUserInfo = (jwtToken: any) => {
 export const logOut = () => {
 	deleteStorage();
 	deleteUserInfo();
+	window.location.reload();
 };
 
 const deleteStorage = () => {

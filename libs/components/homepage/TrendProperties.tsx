@@ -2,16 +2,19 @@ import { Autoplay, Navigation, Pagination } from 'swiper';
 import { Box, Stack } from '@mui/material';
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useMutation, useQuery } from '@apollo/client';
 
 import EastIcon from '@mui/icons-material/East';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
+import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
+import { Message } from '@mui/icons-material';
 import { PropertiesInquiry } from '../../types/property/property.input';
 import { Property } from '../../types/property/property';
 import { T } from '../../types/common';
 import TrendPropertyCard from './TrendPropertyCard';
 import WestIcon from '@mui/icons-material/West';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { useQuery } from '@apollo/client';
 
 interface TrendPropertiesProps {
 	initialInput: PropertiesInquiry;
@@ -21,6 +24,8 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
 	const [trendProperties, setTrendProperties] = useState<Property[]>([]);
+
+	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 
 	/** APOLLO REQUESTS **/
 	const {
@@ -37,6 +42,24 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 		},
 	});
 	/** HANDLERS **/
+
+	const likePropertyHandler = async (user: T, id: string) => {
+		try {
+			//execute likePropertyHandler Mutation
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+			await likeTargetProperty({
+				variables: { input: id },
+			});
+			//execute getPropertiesRefetch
+			await getPropertiesRefetch({ input: initialInput });
+
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('Error:likePropertyHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
 
 	if (trendProperties) console.log('trendProperties:', trendProperties);
 	if (!trendProperties) return null;
@@ -55,21 +78,23 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 								Trends Empty
 							</Box>
 						) : (
-							<Swiper
-								className={'trend-property-swiper'}
-								slidesPerView={'auto'}
-								centeredSlides={true}
-								spaceBetween={15}
-								modules={[Autoplay]}
-							>
-								{trendProperties.map((property: Property) => {
-									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} />
-										</SwiperSlide>
-									);
-								})}
-							</Swiper>
+							<div className="swiper-container">
+								<Swiper
+									className={'trend-property-swiper'}
+									slidesPerView={'auto'}
+									centeredSlides={true}
+									spaceBetween={15}
+									modules={[Autoplay]}
+								>
+									{trendProperties.map((property: Property) => {
+										return (
+											<SwiperSlide key={property._id} className={'trend-property-slide'}>
+												<TrendPropertyCard property={property} likePropertyHandler={likePropertyHandler} />
+											</SwiperSlide>
+										);
+									})}
+								</Swiper>
+							</div>
 						)}
 					</Stack>
 				</Stack>
@@ -102,27 +127,29 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 								Trends Empty
 							</Box>
 						) : (
-							<Swiper
-								className={'trend-property-swiper'}
-								slidesPerView={'auto'}
-								spaceBetween={15}
-								modules={[Autoplay, Navigation, Pagination]}
-								navigation={{
-									nextEl: '.swiper-trend-next',
-									prevEl: '.swiper-trend-prev',
-								}}
-								pagination={{
-									el: '.swiper-trend-pagination',
-								}}
-							>
-								{trendProperties.map((property: Property) => {
-									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} />
-										</SwiperSlide>
-									);
-								})}
-							</Swiper>
+							<div className="swiper-container">
+								<Swiper
+									className={'trend-property-swiper'}
+									slidesPerView={'auto'}
+									spaceBetween={15}
+									modules={[Autoplay, Navigation, Pagination]}
+									navigation={{
+										nextEl: '.swiper-trend-next',
+										prevEl: '.swiper-trend-prev',
+									}}
+									pagination={{
+										el: '.swiper-trend-pagination',
+									}}
+								>
+									{trendProperties.map((property: Property) => {
+										return (
+											<SwiperSlide key={property._id} className={'trend-property-slide'}>
+												<TrendPropertyCard property={property} likePropertyHandler={likePropertyHandler} />
+											</SwiperSlide>
+										);
+									})}
+								</Swiper>
+							</div>
 						)}
 					</Stack>
 				</Stack>

@@ -1,16 +1,20 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { NextPage } from 'next';
 import { Box, Button, Menu, MenuItem, Pagination, Stack, Typography } from '@mui/material';
-import PropertyCard from '../../libs/components/property/PropertyCard';
-import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
+import { Direction, Message } from '../../libs/enums/common.enum';
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+
 import Filter from '../../libs/components/property/Filter';
-import { useRouter } from 'next/router';
+import { GET_PROPERTIES } from '../../apollo/user/query';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import { NextPage } from 'next';
 import { PropertiesInquiry } from '../../libs/types/property/property.input';
 import { Property } from '../../libs/types/property/property';
+import PropertyCard from '../../libs/components/property/PropertyCard';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import { Direction } from '../../libs/enums/common.enum';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
+import { useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
+import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -33,6 +37,38 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 
 	/** APOLLO REQUESTS **/
 
+	const {
+		loading: getPropertiesLoading,
+		data: getPropertiesData,
+		error: getPropertiesError,
+		refetch: getPropertiesRefetch,
+	} = useQuery(GET_PROPERTIES, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setProperties(data?.getProperties?.list);
+			setTotal(data?.getProperties?.metaCounter[0]?.total);
+		},
+	});
+
+	const likePropertyHandler = async (user: T, id: string) => {
+		try {
+			//execute likePropertyHandler Mutation
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+			await likeTargetProperty({
+				variables: { input: id },
+			});
+			//execute getPropertiesRefetch
+			await getPropertiesRefetch({ input: initialInput });
+
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('Error:likePropertyHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (router.query.input) {
@@ -140,7 +176,9 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 									</div>
 								) : (
 									properties.map((property: Property) => {
-										return <PropertyCard property={property} key={property?._id} />;
+										return (
+											<PropertyCard property={property} likePropertyHandler={likePropertyHandler} key={property?._id} />
+										);
 									})
 								)}
 							</Stack>
@@ -193,3 +231,6 @@ PropertyList.defaultProps = {
 };
 
 export default withLayoutBasic(PropertyList);
+function likeTargetProperty(arg0: { variables: { input: string } }) {
+	throw new Error('Function not implemented.');
+}
