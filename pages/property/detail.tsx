@@ -7,13 +7,18 @@ import { GET_PROPERTIES, GET_PROPERTY } from '../../apollo/user/query';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay, Navigation, Pagination } from 'swiper';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 
 import { Comment } from '../../libs/types/comment/comment';
 import { CommentGroup } from '../../libs/enums/comment.enum';
+import { Direction } from '../../libs/enums/common.enum';
 import EastIcon from '@mui/icons-material/East';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import Link from 'next/link';
+import { Message } from '@mui/icons-material';
 import { Pagination as MuiPagination } from '@mui/material';
 import { NextPage } from 'next';
 import { Property } from '../../libs/types/property/property';
@@ -26,7 +31,6 @@ import { formatterStr } from '../../libs/utils';
 import moment from 'moment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { userVar } from '../../apollo/store';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
@@ -57,6 +61,9 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	});
 
 	/** APOLLO REQUESTS **/
+
+	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
 	const {
 		loading: getPropertyLoading,
 		data: getPropertyData,
@@ -65,6 +72,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	} = useQuery(GET_PROPERTY, {
 		fetchPolicy: 'cache-and-network',
 		variables: { input: propertyId },
+		skip: !propertyId,
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			if (data?.getProperty) setProperty(data?.getProperty);
@@ -114,6 +122,35 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	}, [router]);
 
 	useEffect(() => {}, [commentInquiry]);
+
+	const likePropertyHandler = async (user: T, id: string) => {
+		try {
+			//execute likePropertyHandler Mutation
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+			await likeTargetProperty({
+				variables: { input: id },
+			});
+			//execute getPropertiesRefetch
+			await getPropertyRefetch({ input: id });
+			await getPropertiesRefetch({
+				input: {
+					page: 1,
+					limit: 4,
+					sort: 'createdAt',
+					direction: Direction.DESC,
+					search: {
+						locationList: [property?.propertyLocation],
+					},
+				},
+			});
+
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('Error:likePropertyHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
 
 	/** HANDLERS **/
 	const changeImageHandler = (image: string) => {
@@ -558,7 +595,11 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 										{destinationProperties.map((property: Property) => {
 											return (
 												<SwiperSlide className={'similar-homes-slide'} key={property.propertyTitle}>
-													<PropertyBigCard property={property} key={property?._id} />
+													<PropertyBigCard
+														property={property}
+														key={property?._id}
+														likePropertyHandler={likePropertyHandler}
+													/>
 												</SwiperSlide>
 											);
 										})}
