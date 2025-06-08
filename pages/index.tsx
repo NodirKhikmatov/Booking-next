@@ -5,7 +5,6 @@ import { NextPage } from 'next';
 import PopularProperties from '../libs/components/homepage/PopularProperties';
 import { Stack } from '@mui/material';
 import TopAgents from '../libs/components/homepage/TopAgents';
-import TopProperties from '../libs/components/homepage/TopProperties';
 import TrendProperties from '../libs/components/homepage/TrendProperties';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../libs/hooks/useDeviceDetect';
@@ -36,7 +35,6 @@ const Home: NextPage = () => {
 				<TrendProperties />
 				<PopularProperties />
 				<Advertisement />
-				{/* <TopProperties /> */}
 				<TopAgents />
 				<Events />
 				<CommunityBoards />

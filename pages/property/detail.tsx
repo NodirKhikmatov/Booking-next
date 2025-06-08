@@ -63,6 +63,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 	/** APOLLO REQUESTS **/
 
 	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+	const [createComment] = useMutation(CREATE_COMMENT);
 
 	const {
 		loading: getPropertyLoading,
@@ -171,6 +172,27 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 			sweetMixinErrorAlert(err.message).then();
 		}
 	};
+
+	const createCommentHandler = async () => {
+		try {
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+			await createComment({ variables: { input: insertCommentData } });
+
+			setInsertCommentData({ ...insertCommentData, commentContent: '' });
+
+			await getCommentsRefetch({ input: commentInquiry });
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	if (getPropertiesLoading) {
+		return (
+			<Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '1080px' }}>
+				<CircularProgress size={'4rem'} />
+			</Stack>
+		);
+	}
 
 	/** HANDLERS **/
 	const changeImageHandler = (image: string) => {
@@ -494,6 +516,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 										<Button
 											className={'submit-review'}
 											disabled={insertCommentData.commentContent === '' || user?._id === ''}
+											onClick={createCommentHandler}
 										>
 											<Typography className={'title'}>Submit Review</Typography>
 											<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
