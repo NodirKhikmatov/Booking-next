@@ -1,8 +1,8 @@
 import { Box, Divider, Stack, Typography } from '@mui/material';
+import { REACT_APP_API_URL, topPropertyRank } from '../../config';
 
 import IconButton from '@mui/material/IconButton';
 import { Property } from '../../types/property/property';
-import { REACT_APP_API_URL } from '../../config';
 import React from 'react';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
@@ -30,7 +30,7 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
 				>
-					{property?.propertyRank && property?.propertyRank >= 50 ? (
+					{property && property?.propertyRank >= topPropertyRank ? (
 						<div className={'status'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<span>top</span>
@@ -79,7 +79,7 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
 				>
-					{property?.propertyRank && property?.propertyRank >= 50 ? (
+					{property && property?.propertyRank >= topPropertyRank ? (
 						<div className={'status'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<span>top</span>

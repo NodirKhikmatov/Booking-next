@@ -1,11 +1,11 @@
 import { Box, Stack, Typography } from '@mui/material';
+import { REACT_APP_API_URL, topPropertyRank } from '../../config';
 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import Link from 'next/link';
 import { Property } from '../../types/property/property';
-import { REACT_APP_API_URL } from '../../config';
 import React from 'react';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { formatterStr } from '../../utils';
@@ -42,7 +42,7 @@ const PropertyCard = (props: PropertyCardType) => {
 					>
 						<img src={imagePath} alt="" />
 					</Link>
-					{property && property?.propertyRank > 0 && (
+					{property && property?.propertyRank > topPropertyRank && (
 						<Box component={'div'} className={'top-badge'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<Typography>TOP</Typography>
