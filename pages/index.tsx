@@ -25,7 +25,6 @@ const Home: NextPage = () => {
 				<TrendProperties />
 				<PopularProperties />
 				<Advertisement />
-				<TopProperties />
 				<TopAgents />
 			</Stack>
 		);
