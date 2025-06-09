@@ -1,8 +1,9 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import { Stack } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { Box, Stack } from '@mui/material';
+
 import { Member } from '../../types/member/member';
+import React from 'react';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { useRouter } from 'next/router';
 
 interface TopAgentProps {
 	agent: Member;
@@ -29,10 +30,14 @@ const TopAgentCard = (props: TopAgentProps) => {
 	} else {
 		return (
 			<Stack className="top-agent-card">
-				<img src={agentImage} alt="" />
+				<div className="agent-photo">
+					<img src={agentImage} alt={`${agent?.memberNick}'s photo`} />
+				</div>
 
-				<strong>{agent?.memberNick}</strong>
-				<span>{agent?.memberType}</span>
+				<div className="agent-info">
+					<strong>{agent?.memberNick}</strong>
+					<span>{agent?.memberType}</span>
+				</div>
 			</Stack>
 		);
 	}

@@ -71,12 +71,17 @@ const TopAgents = (props: TopAgentsProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Top Agents</span>
-							<p>Our Top Agents always ready to serve you</p>
+							<span className="section-title">
+								<img src="icons/before.png" alt="" width="24" height="24" />
+								PARADOR TEAM
+								<img src="icons/before.png" alt="" width="24" height="24" />
+							</span>
+							<p>
+								<span>Expert Team Persons</span>
+							</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'}>
-								<span>See All Agents</span>
 								<img src="/img/icons/rightup.svg" alt="" />
 							</div>
 						</Box>
@@ -109,6 +114,25 @@ const TopAgents = (props: TopAgentsProps) => {
 							<ArrowBackIosNewIcon />
 						</Box>
 					</Stack>
+					<div className="stats-box">
+						<div className="stat-item">
+							<span className="label">Projects</span>
+							<span className="number">20</span>
+						</div>
+
+						<div className="stat-item">
+							<span className="label">People</span>
+							<span className="number">35</span>
+						</div>
+						<div className="stat-item">
+							<span className="label">Years</span>
+							<span className="number">40</span>
+						</div>
+						<div className="stat-item">
+							<span className="label">Award Winner</span>
+							<span className="number">30</span>
+						</div>
+					</div>
 				</Stack>
 			</Stack>
 		);
