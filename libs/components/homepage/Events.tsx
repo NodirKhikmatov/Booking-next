@@ -1,39 +1,28 @@
+import { Box, Stack } from '@mui/material';
+
 import React from 'react';
-import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 
 interface EventData {
 	eventTitle: string;
-	city: string;
 	description: string;
 	imageSrc: string;
 }
 const eventsData: EventData[] = [
 	{
-		eventTitle: 'Paradise City Theme Park',
-		city: 'Incheon',
-		description:
-			'Experience magic and wonder in Incheon with a visit to the night-themed indoor theme park Wonderbox at Paradise City!',
-		imageSrc: '/img/events/INCHEON.webp',
+		eventTitle: '───January 12, 2026 ◉ Tips & Tricks ',
+		description: 'We Offering Online Registration at Your Hotel',
+		imageSrc: '/img/events/1.jpg',
 	},
 	{
-		eventTitle: 'Taebaeksan Snow Festival',
-		city: 'Seoul',
-		description: 'If you have the opportunity to travel to South Korea, do not miss the Taebaeksan Snow Festival!',
-		imageSrc: '/img/events/SEOUL.webp',
+		eventTitle: '─── December 12, 2025 ◉ Spa & Wellness',
+		description: 'Our Health Club is Now Available for Your Fitness',
+		imageSrc: '/img/events/2.jpg',
 	},
 	{
-		eventTitle: 'Suseong Lake Event',
-		city: 'Daegu',
-		description: 'The Suseong Lake Festival is a culture and arts festival held alongside Suseongmot Lake!',
-		imageSrc: '/img/events/DAEGU.webp',
-	},
-	{
-		eventTitle: 'Sand Festival',
-		city: 'Busan',
-		description:
-			'Haeundae Sand Festival, the nation’s largest eco-friendly exhibition on sand, is held at Haeundae Beach!',
-		imageSrc: '/img/events/BUSAN.webp',
+		eventTitle: '─── February 12, 2026 ◉ Popular Places',
+		description: 'Restoring the Lighting Design in the Parador Places',
+		imageSrc: '/img/events/3.jpg',
 	},
 ];
 
@@ -54,7 +43,6 @@ const EventCard = ({ event }: { event: EventData }) => {
 				}}
 			>
 				<Box component={'div'} className={'info'}>
-					<strong>{event?.city}</strong>
 					<span>{event?.eventTitle}</span>
 				</Box>
 				<Box component={'div'} className={'more'}>
@@ -76,8 +64,16 @@ const Events = () => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span className={'white'}>Events</span>
-							<p className={'white'}>Events waiting your attention!</p>
+							<span className="section-title">
+								<img src="icons/before.png" alt="" width="24" height="24" />
+								NEWS & BLOG
+								<img src="icons/before.png" alt="" width="24" height="24" />
+							</span>
+							<p>
+								<span>Check Latest Blog Post from</span>
+								<br /> <br />
+								<span> Blog List</span>
+							</p>
 						</Box>
 					</Stack>
 					<Stack className={'card-wrapper'}>
