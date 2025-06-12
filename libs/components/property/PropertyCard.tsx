@@ -42,15 +42,13 @@ const PropertyCard = (props: PropertyCardType) => {
 					>
 						<img src={imagePath} alt="" />
 					</Link>
+
 					{property && property?.propertyRank > topPropertyRank && (
 						<Box component={'div'} className={'top-badge'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<Typography>TOP</Typography>
 						</Box>
 					)}
-					<Box component={'div'} className={'price-box'}>
-						<Typography>${formatterStr(property?.propertyPrice)}</Typography>
-					</Box>
 				</Stack>
 				<Stack className="bottom">
 					<Stack className="name-address">
@@ -61,9 +59,34 @@ const PropertyCard = (props: PropertyCardType) => {
 									query: { id: property?._id },
 								}}
 							>
-								<Typography>{property.propertyTitle}</Typography>
+								<Typography className="property-title">{property.propertyTitle}</Typography>
 							</Link>
+							{!recentlyVisited && (
+								<Stack className="buttons">
+									<IconButton color={'default'}>
+										<RemoveRedEyeIcon />
+									</IconButton>
+									<Typography className="view-cnt">{property?.propertyViews}</Typography>
+									<IconButton
+										color={'default'}
+										onClick={(e) => {
+											e.preventDefault();
+											likePropertyHandler(user, property?._id);
+										}}
+									>
+										{myFavorites ? (
+											<FavoriteIcon color="primary" />
+										) : property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+											<FavoriteIcon color="primary" />
+										) : (
+											<FavoriteBorderIcon />
+										)}
+									</IconButton>
+									<Typography className="view-cnt">{property?.propertyLikes}</Typography>
+								</Stack>
+							)}
 						</Stack>
+
 						<Stack className="address">
 							<Typography>
 								{property.propertyAddress}, {property.propertyLocation}
@@ -72,49 +95,70 @@ const PropertyCard = (props: PropertyCardType) => {
 					</Stack>
 					<Stack className="options">
 						<Stack className="option">
-							<img src="/img/icons/bed.svg" alt="" /> <Typography>{property.propertyBeds} bed</Typography>
+							<img src="/img/icons/bed.png " alt="" /> <Typography>{property.propertyBeds} bed</Typography>
 						</Stack>
 						<Stack className="option">
-							<img src="/img/icons/room.svg" alt="" /> <Typography>{property.propertyRooms} room</Typography>
+							<img src="/img/icons/room.png" alt="" />
+							<Typography>{property.propertyRooms} room</Typography>
 						</Stack>
 						<Stack className="option">
-							<img src="/img/icons/expand.svg" alt="" /> <Typography>{property.propertySquare} m2</Typography>
+							<img src="/img/icons/bathroom.png" alt="" />
+							<Typography>{property.propertyBathroom} Bathrooms</Typography>
+						</Stack>
+						<Stack className="option">
+							<img src="/img/icons/expand.svg" alt="" />
+
+							<Typography>
+								{' '}
+								{property?.propertySquare} m<sup>2</sup>
+							</Typography>
 						</Stack>
 					</Stack>
-					<Stack className="divider"></Stack>
+					{/* <Stack className="divider"></Stack> */}
 					<Stack className="type-buttons">
 						<Stack className="type">
 							<Typography
-								sx={{ fontWeight: 500, fontSize: '13px' }}
-								className={property.propertyRent ? '' : 'disabled-type'}
+								sx={{ fontWeight: 500, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
+								className={property.propertyBreakfast ? '' : 'disabled-type'}
 							>
-								Rent
+								<svg
+									stroke="currentColor"
+									fill="currentColor"
+									strokeWidth="0"
+									viewBox="0 0 16 16"
+									height="1em"
+									width="1em"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"></path>
+								</svg>
+								Free Breakfast Included
 							</Typography>
+
 							<Typography
-								sx={{ fontWeight: 500, fontSize: '13px' }}
-								className={property.propertyBarter ? '' : 'disabled-type'}
+								sx={{ fontWeight: 500, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
+								className={property.propertyCancellation ? '' : 'disabled-type'}
 							>
-								Barter
+								<svg
+									stroke="currentColor"
+									fill="currentColor"
+									strokeWidth="0"
+									viewBox="0 0 16 16"
+									height="1em"
+									width="1em"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"></path>
+								</svg>
+								Free Cancellation Available
 							</Typography>
 						</Stack>
-						{!recentlyVisited && (
-							<Stack className="buttons">
-								<IconButton color={'default'}>
-									<RemoveRedEyeIcon />
-								</IconButton>
-								<Typography className="view-cnt">{property?.propertyViews}</Typography>
-								<IconButton color={'default'} onClick={() => likePropertyHandler(user, property?._id)}>
-									{myFavorites ? (
-										<FavoriteIcon color="primary" />
-									) : property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-										<FavoriteIcon color="primary" />
-									) : (
-										<FavoriteBorderIcon />
-									)}
-								</IconButton>
-								<Typography className="view-cnt">{property?.propertyLikes}</Typography>
-							</Stack>
-						)}
+						<Box component={'div'} className={'price-box'}>
+							<Typography className={'price-title'}>
+								${formatterStr(property?.propertyPrice)}
+								<span>/day</span>{' '}
+							</Typography>
+						</Box>
 					</Stack>
 				</Stack>
 			</Stack>

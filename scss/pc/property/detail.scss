@@ -56,7 +56,7 @@
 								align-items: center;
 								gap: 7px;
 								.buy-rent {
-									color: #eb6753;
+									color: rgb(12, 188, 135);
 									font-family: $font;
 									font-size: 15px;
 									font-style: normal;
@@ -83,13 +83,27 @@
 								height: auto;
 								flex-direction: row;
 								gap: 8px;
+
+								img {
+									margin-right: 2px;
+									width: 17px;
+									height: 17px;
+									fill: rgb(170, 132, 83);
+								}
+
 								p {
-									color: #181a20;
+									color: #818181;
 									font-family: $font;
-									font-size: 15px;
+									font-size: 13px;
 									font-style: normal;
 									font-weight: 400;
 									line-height: normal;
+								}
+
+								sup {
+									top: -5px;
+									position: relative;
+									vertical-align: baseline;
 								}
 							}
 						}
@@ -304,6 +318,7 @@
 											font-weight: 600;
 											line-height: 35px;
 										}
+
 										.data {
 											width: 88px;
 											color: #181a20;

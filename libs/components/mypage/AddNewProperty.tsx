@@ -49,9 +49,10 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 			propertyType: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyType : '',
 			propertyLocation: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyLocation : '',
 			propertyAddress: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyAddress : '',
-			propertyBarter: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBarter : false,
-			propertyRent: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRent : false,
+			propertyBreakfast: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBreakfast : false,
+			propertyCancellation: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyCancellation : false,
 			propertyRooms: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRooms : 0,
+			propertyBathroom: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBathroom : 0,
 			propertyBeds: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBeds : 0,
 			propertySquare: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertySquare : 0,
 			propertyDesc: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyDesc : '',
@@ -465,7 +466,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 										hidden={true}
 										onChange={uploadImages}
 										multiple={true}
-										accept="image/jpg, image/jpeg, image/png, image/webp"
+										accept="image/jpg, image/jpeg, image/png, image/webp, image/avif"
 									/>
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
 										<g clipPath="url(#clip0_7309_3249)">

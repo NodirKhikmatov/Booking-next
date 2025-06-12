@@ -449,8 +449,8 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 													inputProps={{ 'aria-label': 'Without label' }}
 												>
 													<MenuItem value={'all'}>Hotel</MenuItem>
-													<MenuItem value={'propertyBarter'}>Penthouse</MenuItem>
-													<MenuItem value={'propertyRent'}>Resort Vilas</MenuItem>
+													<MenuItem value={'propertyBreakfast'}>Penthouse</MenuItem>
+													<MenuItem value={'propertyCancellation'}>Resort Vilas</MenuItem>
 												</Select>
 											</FormControl>
 										</div>

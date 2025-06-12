@@ -47,7 +47,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>COMMUNITY CARD MOBILE</div>;
+		return <div>News CARD MOBILE</div>;
 	} else {
 		return (
 			<Stack

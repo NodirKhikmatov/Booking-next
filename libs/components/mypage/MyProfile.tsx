@@ -143,7 +143,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 									hidden
 									id="hidden-input"
 									onChange={uploadImage}
-									accept="image/jpg, image/jpeg, image/png, image/webp"
+									accept="image/jpg, image/jpeg, image/png, image/webp, img/avif"
 								/>
 								<label htmlFor="hidden-input" className="labeler">
 									<Typography>Upload Profile Image</Typography>

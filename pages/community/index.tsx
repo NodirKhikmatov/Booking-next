@@ -100,7 +100,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	};
 
 	if (device === 'mobile') {
-		return <h1>COMMUNITY PAGE MOBILE</h1>;
+		return <h1>News PAGE MOBILE</h1>;
 	} else {
 		return (
 			<div id="community-list-page">
@@ -111,7 +111,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 								<Stack className={'image-info'}>
 									<img src={'/img/logo/logoText.svg'} />
 									<Stack className={'community-name'}>
-										<Typography className={'name'}>Nestar Community</Typography>
+										<Typography className={'name'}>News</Typography>
 									</Stack>
 								</Stack>
 

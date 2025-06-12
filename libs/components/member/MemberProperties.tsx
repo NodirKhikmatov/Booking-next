@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { NextPage } from 'next';
 import { Pagination, Stack, Typography } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyCard } from '../mypage/PropertyCard';
-import { Property } from '../../types/property/property';
+import React, { useEffect, useState } from 'react';
+
+import { GET_PROPERTIES } from '../../../apollo/user/query';
+import { NextPage } from 'next';
 import { PropertiesInquiry } from '../../types/property/property.input';
+import { Property } from '../../types/property/property';
+import { PropertyCard } from '../mypage/PropertyCard';
 import { T } from '../../types/common';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 
 const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
@@ -17,7 +20,21 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 	const [total, setTotal] = useState<number>(0);
 
 	/** APOLLO REQUESTS **/
-
+	const {
+		loading: getPropertiesLoading,
+		data: getPropertiesData,
+		error: getPropertiesError,
+		refetch: getPropertiesRefetch,
+	} = useQuery(GET_PROPERTIES, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		skip: !searchFilter?.search?.memberId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: any) => {
+			setAgentProperties(data?.getProperties?.list);
+			setTotal(data?.getProperties?.metaCounter[0]?.total ?? 0);
+		},
+	});
 	/** LIFECYCLES **/
 	useEffect(() => {}, [searchFilter]);
 

@@ -38,13 +38,6 @@ const PropertyBigCard = (props: PropertyBigCardProps) => {
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages?.[0]})` }}
 				>
-					{property && property?.propertyRank >= topPropertyRank && (
-						<div className={'status'}>
-							<img src="/img/icons/electricity.svg" alt="" />
-							<span>top</span>
-						</div>
-					)}
-
 					<div className={'price'}>${formatterStr(property?.propertyPrice)}</div>
 				</Box>
 				<Box component={'div'} className={'info'}>
@@ -67,8 +60,8 @@ const PropertyBigCard = (props: PropertyBigCardProps) => {
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 					<div className={'bott'}>
 						<div>
-							{property?.propertyRent ? <p>Rent</p> : <span>Rent</span>}
-							{property?.propertyBarter ? <p>Barter</p> : <span>Barter</span>}
+							{property?.propertyCancellation ? <p>Free Cancellation</p> : <span>Free Cancellation</span>}
+							{property?.propertyBreakfast ? <p>Free Breakfast</p> : <span>Free Breakfast</span>}
 						</div>
 						<div className="buttons-box">
 							<IconButton color={'default'}>

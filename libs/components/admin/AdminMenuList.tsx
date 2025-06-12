@@ -1,12 +1,13 @@
+import { ChatsCircle, Headset, User, UserCircleGear } from 'phosphor-react';
+import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useRouter, withRouter } from 'next/router';
-import Link from 'next/link';
-import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+
 import Collapse from '@mui/material/Collapse';
-import Typography from '@mui/material/Typography';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { ChatsCircle, Headset, User, UserCircleGear } from 'phosphor-react';
+import Link from 'next/link';
+import Typography from '@mui/material/Typography';
 import cookies from 'js-cookie';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 
@@ -31,10 +32,10 @@ const AdminMenuList = (props: any) => {
 
 		switch (pathnames[1]) {
 			case 'properties':
-				setClickMenu(['Properties']);
+				setClickMenu(['Hotel & Villas ']);
 				break;
 			case 'community':
-				setClickMenu(['Community']);
+				setClickMenu(['News']);
 				break;
 			case 'cs':
 				setClickMenu(['Cs']);

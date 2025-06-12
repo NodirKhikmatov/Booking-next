@@ -60,8 +60,8 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
 				propertyLikes
 				propertyImages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyBreakfast
+				propertyCancellation
 				memberId
 				soldAt
 				deletedAt

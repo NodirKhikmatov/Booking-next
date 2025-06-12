@@ -2,13 +2,13 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
+import { Box, Stack } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { getJwtToken, updateUserInfo } from '../../auth';
 
 import Chat from '../Chat';
 import Footer from '../Footer';
 import Head from 'next/head';
-import { Stack } from '@mui/material';
 import Top from '../Top';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useReactiveVar } from '@apollo/client';
@@ -31,33 +31,33 @@ const withLayoutBasic = (Component: any) => {
 
 			switch (router.pathname) {
 				case '/property':
-					title = 'Property Search';
+					title = 'Hotel & Villas';
 					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/properties.png';
+					bgImage = '/img/banner/11.avif';
 					break;
 				case '/agent':
-					title = 'Agents';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/agents.webp';
+					title = 'Team';
+					desc = 'Home / cancellation';
+					bgImage = '/img/banner/22.avif';
 					break;
 				case '/agent/detail':
 					title = 'Agent Page';
-					desc = 'Home / For Rent';
+					desc = 'Home / For cancellation';
 					bgImage = '/img/banner/header2.svg';
 					break;
 				case '/mypage':
 					title = 'my page';
-					desc = 'Home / For Rent';
+					desc = 'Home / For cancellation';
 					bgImage = '/img/banner/header1.svg';
 					break;
 				case '/community':
-					title = 'Community';
-					desc = 'Home / For Rent';
+					title = 'News';
+					desc = 'Home / For cancellation';
 					bgImage = '/img/banner/header2.svg';
 					break;
 				case '/community/detail':
 					title = 'Community Detail';
-					desc = 'Home / For Rent';
+					desc = 'Home / For cancellation';
 					bgImage = '/img/banner/header2.svg';
 					break;
 				case '/cs':
@@ -73,7 +73,7 @@ const withLayoutBasic = (Component: any) => {
 					break;
 				case '/member':
 					title = 'Member Page';
-					desc = 'Home / For Rent';
+					desc = 'Home / For cancellation';
 					bgImage = '/img/banner/header1.svg';
 					break;
 				default:
@@ -95,7 +95,7 @@ const withLayoutBasic = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
+						<title>Parador</title>
 						<meta name={'title'} content={`Nestar`} />
 					</Head>
 					<Stack id="mobile-wrap">
@@ -117,25 +117,73 @@ const withLayoutBasic = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
+						<title>Parador</title>
 						<meta name={'title'} content={`Nestar`} />
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id={'top'}>
 							<Top />
 						</Stack>
-
 						<Stack
 							className={`header-basic ${authHeader && 'auth'}`}
-							style={{
-								backgroundImage: `url(${memoizedValues.bgImage})`,
-								backgroundSize: 'cover',
-								boxShadow: 'inset 10px 40px 150px 40px rgb(24 22 36)',
+							sx={{
+								position: 'relative',
+								height: '300px',
+								overflow: 'hidden',
 							}}
 						>
-							<Stack className={'container'}>
-								<strong>{t(memoizedValues.title)}</strong>
-								<span>{t(memoizedValues.desc)}</span>
+							{/* Background image */}
+							<Box
+								sx={{
+									position: 'absolute',
+									top: 0,
+									left: 0,
+									width: '100%',
+									height: '100%',
+									backgroundImage: `url(${memoizedValues.bgImage})`,
+									backgroundSize: 'cover',
+									backgroundPosition: 'center',
+									backgroundRepeat: 'no-repeat',
+									backgroundColor: 'rgba(0, 0, 0, 0.8)', // darkness level
+									backgroundBlendMode: 'multiply', // or try 'multiply'
+									zIndex: -1,
+								}}
+							/>
+
+							{/* Foreground content */}
+							<Stack
+								className="container"
+								sx={{
+									position: 'relative',
+									zIndex: 1,
+									color: 'white',
+									justifyContent: 'center',
+									alignItems: 'center',
+									textAlign: 'center',
+									height: '100%',
+								}}
+							>
+								{/* Breadcrumb with hover link */}
+								<Box sx={{ fontSize: '14px', color: '#ddd', mb: 1 }}>
+									<span style={{ display: 'block', marginBottom: '30px', fontSize: '60px' }}>
+										{t(memoizedValues.title)}
+									</span>
+									<Box
+										component="a"
+										href="/"
+										sx={{
+											color: '#ddd',
+											textDecoration: 'underline',
+											'&:hover': {
+												color: '#b18e60',
+											},
+										}}
+									>
+										Home
+									</Box>
+									<span style={{ margin: '0 6px' }}>/</span>
+									<strong style={{ fontSize: '14px' }}>{t(memoizedValues.title)}</strong>
+								</Box>
 							</Stack>
 						</Stack>
 

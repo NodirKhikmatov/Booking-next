@@ -96,11 +96,12 @@ export const GET_PROPERTY = gql`
 			propertyBeds
 			propertyRooms
 			propertyViews
+			propertyBathroom
 			propertyLikes
 			propertyImages
 			propertyDesc
-			propertyBarter
-			propertyRent
+			propertyBreakfast
+			propertyCancellation
 			memberId
 			soldAt
 			deletedAt
@@ -159,8 +160,8 @@ export const GET_PROPERTIES = gql`
 				propertyRank
 				propertyImages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyBreakfast
+				propertyCancellation
 				memberId
 				soldAt
 				deletedAt
@@ -220,8 +221,8 @@ export const GET_AGENT_PROPERTIES = gql`
 				propertyLikes
 				propertyImages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyBreakfast
+				propertyCancellation
 				memberId
 				soldAt
 				deletedAt
@@ -256,8 +257,8 @@ export const GET_FAVORITES = gql`
 				propertyRank
 				propertyImages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyBreakfast
+				propertyCancellation
 				memberId
 				soldAt
 				deletedAt
@@ -319,8 +320,8 @@ export const GET_VISITED = gql`
 				propertyRank
 				propertyImages
 				propertyDesc
-				propertyBarter
-				propertyRent
+				propertyBreakfast
+				propertyCancellation
 				memberId
 				soldAt
 				deletedAt

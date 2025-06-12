@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import type { NextPage } from 'next';
-import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
 import { Box, List, ListItem, Stack } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { PropertyLocation, PropertyStatus } from '../../../libs/enums/property.enum';
+import React, { useEffect, useState } from 'react';
+import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
+
+import { AllPropertiesInquiry } from '../../../libs/types/property/property.input';
 import Divider from '@mui/material/Divider';
-import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import type { NextPage } from 'next';
+import { Property } from '../../../libs/types/property/property';
+import { PropertyPanelList } from '../../../libs/components/admin/properties/PropertyList';
+import { PropertyUpdate } from '../../../libs/types/property/property.update';
+import Select from '@mui/material/Select';
 import { TabContext } from '@mui/lab';
 import TablePagination from '@mui/material/TablePagination';
-import { PropertyPanelList } from '../../../libs/components/admin/properties/PropertyList';
-import { AllPropertiesInquiry } from '../../../libs/types/property/property.input';
-import { Property } from '../../../libs/types/property/property';
-import { PropertyLocation, PropertyStatus } from '../../../libs/enums/property.enum';
-import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
-import { PropertyUpdate } from '../../../libs/types/property/property.update';
+import Typography from '@mui/material/Typography';
+import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
 
 const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);

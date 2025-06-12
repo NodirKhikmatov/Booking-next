@@ -240,7 +240,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>COMMUNITY DETAIL PAGE MOBILE</div>;
+		return <div>News DETAIL PAGE MOBILE</div>;
 	} else {
 		return (
 			<div id="community-detail-page">
@@ -250,7 +250,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 							<Stack className={'image-info'}>
 								<img src={'/img/logo/logoText.svg'} />
 								<Stack className={'community-name'}>
-									<Typography className={'name'}>Community Board Article</Typography>
+									<Typography className={'name'}>News</Typography>
 								</Stack>
 							</Stack>
 							<Tabs

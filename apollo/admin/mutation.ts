@@ -54,8 +54,8 @@ export const UPDATE_PROPERTY_BY_ADMIN = gql`
 			propertyLikes
 			propertyImages
 			propertyDesc
-			propertyBarter
-			propertyRent
+			propertyBreakfast
+			propertyCancellation
 			memberId
 			soldAt
 			deletedAt
@@ -83,8 +83,8 @@ export const REMOVE_PROPERTY_BY_ADMIN = gql`
 			propertyLikes
 			propertyImages
 			propertyDesc
-			propertyBarter
-			propertyRent
+			propertyBreakfast
+			propertyCancellation
 			memberId
 			soldAt
 			deletedAt
