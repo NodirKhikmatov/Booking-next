@@ -1,6 +1,5 @@
 import { ApolloClient, ApolloLink, InMemoryCache, NormalizedCacheObject, from, split } from '@apollo/client';
 
-import { Message } from '@mui/icons-material';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import createUploadLink from 'apollo-upload-client/public/createUploadLink.js';
@@ -63,12 +62,12 @@ function createIsomorphicLink() {
 
 		const errorLink = onError(({ graphQLErrors, networkError, response }) => {
 			if (graphQLErrors) {
-				graphQLErrors.map(({ message, locations, path, extensions }) =>
-					console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
-				
-				// if(!Message.includes("input")) sweetErrorAlert(message)
-				
-				);
+				graphQLErrors.map(({ message, locations, path, extensions }) => {
+					console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+					if (!message.includes('input')) {
+						sweetErrorAlert(message);
+					}
+				});
 			}
 			if (networkError) console.log(`[Network error]: ${networkError}`);
 			// @ts-ignore

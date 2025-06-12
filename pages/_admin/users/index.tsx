@@ -1,24 +1,26 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import type { NextPage } from 'next';
-import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
-import { MemberPanelList } from '../../../libs/components/admin/users/MemberList';
 import { Box, InputAdornment, List, ListItem, Stack } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { TabContext } from '@mui/lab';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import TablePagination from '@mui/material/TablePagination';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { MembersInquiry } from '../../../libs/types/member/member.input';
-import { Member } from '../../../libs/types/member/member';
 import { MemberStatus, MemberType } from '../../../libs/enums/member.enum';
-import { sweetErrorHandling } from '../../../libs/sweetAlert';
-import { MemberUpdate } from '../../../libs/types/member/member.update';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import Divider from '@mui/material/Divider';
 import { GET_ALL_MEMBERS_BY_ADMIN } from '../../../apollo/admin/query';
-import { useQuery } from '@apollo/client';
+import { Member } from '../../../libs/types/member/member';
+import { MemberPanelList } from '../../../libs/components/admin/users/MemberList';
+import { MemberUpdate } from '../../../libs/types/member/member.update';
+import { MembersInquiry } from '../../../libs/types/member/member.input';
+import MenuItem from '@mui/material/MenuItem';
+import type { NextPage } from 'next';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Select from '@mui/material/Select';
 import { T } from '../../../libs/types/common';
+import { TabContext } from '@mui/lab';
+import TablePagination from '@mui/material/TablePagination';
+import Typography from '@mui/material/Typography';
+import { UPDATE_MEMBER_BY_ADMIN } from '../../../apollo/admin/mutation';
+import { sweetErrorHandling } from '../../../libs/sweetAlert';
+import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
 
 const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -32,9 +34,8 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [searchType, setSearchType] = useState('ALL');
 
 	/** APOLLO REQUESTS **/
-	const [updateMemberByAdmin] = useMutation(UPDATE_MEMBER_BY_ADMIN)
+	const [updateMemberByAdmin] = useMutation(UPDATE_MEMBER_BY_ADMIN);
 
-	
 	const {
 		loading: getAllMembersByAdminLoading,
 		data: getAllMembersByAdminData,
@@ -45,29 +46,27 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
 		variables: { input: membersInquiry },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			setMembers(data?getAllMembersByAdmin?.list)
-			setMembersTotal(data?.getAllMembersByAdmin?.metaCounter[0]?.total ?? 0)
+			setMembers(data?.getAllMembersByAdmin?.list);
+			setMembersTotal(data?.getAllMembersByAdmin?.metaCounter[0]?.total ?? 0);
 		},
 	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		getALLMembersRefetch({input:membersInquiry}).then();
+		getALLMembersRefetch({ input: membersInquiry }).then();
 	}, [membersInquiry]);
 
 	/** HANDLERS **/
 	const changePageHandler = async (event: unknown, newPage: number) => {
 		membersInquiry.page = newPage + 1;
-		await getALLMembersRefetch({input:membersInquiry})
-
+		await getALLMembersRefetch({ input: membersInquiry });
 		setMembersInquiry({ ...membersInquiry });
 	};
 
 	const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		membersInquiry.limit = parseInt(event.target.value, 10);
 		membersInquiry.page = 1;
-		await getALLMembersRefetch({input:membersInquiry})
-
+		await getALLMembersRefetch({ input: membersInquiry });
 		setMembersInquiry({ ...membersInquiry });
 	};
 
@@ -105,14 +104,14 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
 	};
 
 	const updateMemberHandler = async (updateData: MemberUpdate) => {
-		try {	await updateMemberByAdmin({
-			variables:{
-				input:updateData
-			}
-		})
-		menuIconCloseHandler();
-		await getALLMembersRefetch({input:membersInquiry})
-			
+		try {
+			await updateMemberByAdmin({
+				variables: {
+					input: updateData,
+				},
+			});
+			menuIconCloseHandler();
+			await getALLMembersRefetch({ input: membersInquiry });
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
@@ -227,8 +226,7 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
 																text: '',
 															},
 														});
-														await getALLMembersRefetch({input:membersInquiry})
-
+														await getALLMembersRefetch({ input: membersInquiry });
 													}}
 												/>
 											)}

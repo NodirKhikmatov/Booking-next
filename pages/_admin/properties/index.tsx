@@ -1,7 +1,9 @@
 import { Box, List, ListItem, Stack } from '@mui/material';
 import { PropertyLocation, PropertyStatus } from '../../../libs/enums/property.enum';
+import { REMOVE_PROPERTY_BY_ADMIN, UPDATE_PROPERTY_BY_ADMIN } from '../../../apollo/admin/mutation';
 import React, { useEffect, useState } from 'react';
 import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
+import { useMutation, useQuery } from '@apollo/client';
 
 import { AllPropertiesInquiry } from '../../../libs/types/property/property.input';
 import Divider from '@mui/material/Divider';
@@ -12,10 +14,10 @@ import { Property } from '../../../libs/types/property/property';
 import { PropertyPanelList } from '../../../libs/components/admin/properties/PropertyList';
 import { PropertyUpdate } from '../../../libs/types/property/property.update';
 import Select from '@mui/material/Select';
+import { T } from '../../../libs/types/common';
 import { TabContext } from '@mui/lab';
 import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
-import { useQuery } from '@apollo/client';
 import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
 
 const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
@@ -30,8 +32,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 
 	/** APOLLO REQUESTS **/
 	const [updatePropertyByAdmin] = useMutation(UPDATE_PROPERTY_BY_ADMIN);
-	const [removePropertyByAdmin] = useMutation(REMOVE_PROPERTY_BY_ADMIN);
-
+	const [removeePropertyByAdmin] = useMutation(REMOVE_PROPERTY_BY_ADMIN);
 	const {
 		loading: getAllPropertiesByAdminLoading,
 		data: getAllPropertiesByAdminData,
@@ -42,28 +43,25 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 		variables: { input: propertiesInquiry },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
-			setProperties(data?.getAllPropertiesByAdminLoading?.list);
-			setPropertiesTotal(data?.getProperties?.metaCounter[0]?.total);
+			setProperties(data?.getAllPropertiesByAdmin?.list);
+			setPropertiesTotal(data?.getAllPropertiesByAdmin?.metaCounter[0]?.total ?? 0);
 		},
 	});
 
 	/** LIFECYCLES **/
-	useEffect(() => {getAllPropertiesByAdmin({input: propertiesInquiry }).then(); [propertiesInquiry]);
-
+	useEffect(() => {
+		getAllPropertiesByAdminRefetch({ input: propertiesInquiry }).then();
+	}, [propertiesInquiry]);
 
 	/** HANDLERS **/
 	const changePageHandler = async (event: unknown, newPage: number) => {
 		propertiesInquiry.page = newPage + 1;
-		await getAllPropertiesByAdminRefetch({input: propertiesInquiry})
-
 		setPropertiesInquiry({ ...propertiesInquiry });
 	};
 
 	const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		propertiesInquiry.limit = parseInt(event.target.value, 10);
 		propertiesInquiry.page = 1;
-		await getAllPropertiesByAdminRefetch({input: propertiesInquiry})
-
 		setPropertiesInquiry({ ...propertiesInquiry });
 	};
 
@@ -101,15 +99,15 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 
 	const removePropertyHandler = async (id: string) => {
 		try {
-			if (await sweetConfirmAlert('Are you sure to remove?')) { 
-				variables:{
-					input:id,
-				}
+			if (await sweetConfirmAlert('Are you sure to remove?')) {
+				await removeePropertyByAdmin({
+					variables: {
+						input: id,
+					},
+				});
+				await getAllPropertiesByAdminRefetch({ input: propertiesInquiry });
 			}
-		await getAllPropertiesByAdminRefetch({input: propertiesInquiry})
-
-    	menuIconCloseHandler();		
-
+			menuIconCloseHandler();
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
@@ -141,7 +139,13 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	const updatePropertyHandler = async (updateData: PropertyUpdate) => {
 		try {
 			console.log('+updateData: ', updateData);
+			await updatePropertyByAdmin({
+				variables: {
+					input: updateData,
+				},
+			});
 			menuIconCloseHandler();
+			await getAllPropertiesByAdminRefetch({ input: propertiesInquiry });
 		} catch (err: any) {
 			menuIconCloseHandler();
 			sweetErrorHandling(err).then();
