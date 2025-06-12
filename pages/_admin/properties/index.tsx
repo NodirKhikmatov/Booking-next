@@ -5,6 +5,7 @@ import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert'
 
 import { AllPropertiesInquiry } from '../../../libs/types/property/property.input';
 import Divider from '@mui/material/Divider';
+import { GET_ALL_PROPERTIES_BY_ADMIN } from '../../../apollo/admin/query';
 import MenuItem from '@mui/material/MenuItem';
 import type { NextPage } from 'next';
 import { Property } from '../../../libs/types/property/property';
@@ -14,6 +15,7 @@ import Select from '@mui/material/Select';
 import { TabContext } from '@mui/lab';
 import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
+import { useQuery } from '@apollo/client';
 import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
 
 const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
@@ -27,19 +29,41 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [searchType, setSearchType] = useState('ALL');
 
 	/** APOLLO REQUESTS **/
+	const [updatePropertyByAdmin] = useMutation(UPDATE_PROPERTY_BY_ADMIN);
+	const [removePropertyByAdmin] = useMutation(REMOVE_PROPERTY_BY_ADMIN);
+
+	const {
+		loading: getAllPropertiesByAdminLoading,
+		data: getAllPropertiesByAdminData,
+		error: getAllPropertiesByAdminError,
+		refetch: getAllPropertiesByAdminRefetch,
+	} = useQuery(GET_ALL_PROPERTIES_BY_ADMIN, {
+		fetchPolicy: 'network-only',
+		variables: { input: propertiesInquiry },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setProperties(data?.getAllPropertiesByAdminLoading?.list);
+			setPropertiesTotal(data?.getProperties?.metaCounter[0]?.total);
+		},
+	});
 
 	/** LIFECYCLES **/
-	useEffect(() => {}, [propertiesInquiry]);
+	useEffect(() => {getAllPropertiesByAdmin({input: propertiesInquiry }).then(); [propertiesInquiry]);
+
 
 	/** HANDLERS **/
 	const changePageHandler = async (event: unknown, newPage: number) => {
 		propertiesInquiry.page = newPage + 1;
+		await getAllPropertiesByAdminRefetch({input: propertiesInquiry})
+
 		setPropertiesInquiry({ ...propertiesInquiry });
 	};
 
 	const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		propertiesInquiry.limit = parseInt(event.target.value, 10);
 		propertiesInquiry.page = 1;
+		await getAllPropertiesByAdminRefetch({input: propertiesInquiry})
+
 		setPropertiesInquiry({ ...propertiesInquiry });
 	};
 
@@ -77,9 +101,15 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 
 	const removePropertyHandler = async (id: string) => {
 		try {
-			if (await sweetConfirmAlert('Are you sure to remove?')) {
+			if (await sweetConfirmAlert('Are you sure to remove?')) { 
+				variables:{
+					input:id,
+				}
 			}
-			menuIconCloseHandler();
+		await getAllPropertiesByAdminRefetch({input: propertiesInquiry})
+
+    	menuIconCloseHandler();		
+
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
