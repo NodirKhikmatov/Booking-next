@@ -339,10 +339,25 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 													height: '24px',
 													backgroundColor: 'rgb(170, 132, 83)',
 													WebkitMask: 'url(/img/icons/wife.png) no-repeat center / contain',
-													mask: 'url(/img/icons/wife.png) no-repeat center / contain',
+													mask: 'url(/img/icons/freewife.png) no-repeat center / contain',
+													display: 'inline-block',
 												}}
 											/>
-											<Typography>{property?.propertyFacility} Wifi Available</Typography>
+											<Typography>{property?.propertyFacility}Wife available</Typography>
+										</Stack>
+
+										<Stack className="option" direction="row" alignItems="center" spacing={1}>
+											<div
+												style={{
+													width: '24px',
+													height: '24px',
+													backgroundColor: 'rgb(170, 132, 83)',
+													WebkitMask: 'url(/img/icons/parking.png) no-repeat center / contain',
+													mask: 'url(/img/icons/parking.png) no-repeat center / contain',
+												}}
+											/>
+
+											<Typography>{property?.propertyParking} Parking</Typography>
 										</Stack>
 									</Stack>
 								</Stack>
