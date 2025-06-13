@@ -97,6 +97,7 @@ export const GET_PROPERTY = gql`
 			propertyRooms
 			propertyViews
 			propertyBathroom
+			propertyOffer
 			propertyLikes
 			propertyImages
 			propertyDesc
@@ -154,7 +155,6 @@ export const GET_PROPERTIES = gql`
 				propertyRooms
 				propertyViews
 				propertyBathroom
-				propertyFacility
 				propertyOffer
 				propertyLikes
 				propertyRank

@@ -1,4 +1,5 @@
 import { ApolloClient, ApolloLink, InMemoryCache, NormalizedCacheObject, from, split } from '@apollo/client';
+import { error, log } from 'console';
 
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { WebSocketLink } from '@apollo/client/link/ws';
@@ -6,6 +7,7 @@ import createUploadLink from 'apollo-upload-client/public/createUploadLink.js';
 import { getJwtToken } from '../libs/auth';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { onError } from '@apollo/client/link/error';
+import { socketVar } from './store';
 import { sweetErrorAlert } from '../libs/sweetAlert';
 import { useMemo } from 'react';
 
@@ -29,6 +31,33 @@ const tokenRefreshLink = new TokenRefreshLink({
 		return null;
 	},
 });
+
+//Custom webSocket client
+class LoggingWebSocket {
+	private socket: WebSocket;
+
+	constructor(url: string) {
+		this.socket = new WebSocket(`${url}?token=${getJwtToken()}`);
+		socketVar(this.socket);
+
+		this.socket.onopen = () => {
+			console.log('websocket connection');
+		};
+
+		this.socket.onmessage = (msg) => {
+			console.log('websocket message', msg.data);
+		};
+		this.socket.onerror = (error) => {
+			console.log('websocket, error:', error);
+		};
+	}
+	send(data: string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView) {
+		this.socket.send(data);
+	}
+	close() {
+		this.socket.close();
+	}
+}
 
 function createIsomorphicLink() {
 	if (typeof window !== 'undefined') {
@@ -58,6 +87,7 @@ function createIsomorphicLink() {
 					return { headers: getHeaders() };
 				},
 			},
+			webSocketImpl: LoggingWebSocket,
 		});
 
 		const errorLink = onError(({ graphQLErrors, networkError, response }) => {

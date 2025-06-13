@@ -3,13 +3,13 @@ import { CREATE_PROPERTY, UPDATE_PROPERTY } from '../../../apollo/user/mutation'
 import { PropertyLocation, PropertyType } from '../../enums/property.enum';
 import { REACT_APP_API_URL, propertySquare } from '../../config';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { sweetErrorHandling, sweetMixinErrorAlert, sweetMixinSuccessAlert } from '../../sweetAlert';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 
 import { GET_PROPERTY } from '../../../apollo/user/query';
 import { PropertyInput } from '../../types/property/property.input';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
-import { sweetMixinErrorAlert } from '../../sweetAlert';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
@@ -28,16 +28,19 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
 	const [createProperty] = useMutation(CREATE_PROPERTY);
 	const [updateProperty] = useMutation(UPDATE_PROPERTY);
+	const propertyId = router.query.propertyId as string;
+
 	const {
 		loading: getPropertyLoading,
 		data: getPropertyData,
 		error: getPropertyError,
 		refetch: getPropertyRefetch,
 	} = useQuery(GET_PROPERTY, {
-		fetchPolicy: 'network-only',
+		skip: !propertyId,
 		variables: {
-			input: router.query.propertyId,
+			input: propertyId,
 		},
+		fetchPolicy: 'network-only',
 	});
 
 	/** LIFECYCLES **/
@@ -48,9 +51,12 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 			propertyPrice: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyPrice : 0,
 			propertyType: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyType : '',
 			propertyLocation: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyLocation : '',
+			propertyOffer: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyOffer : '',
+
 			propertyAddress: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyAddress : '',
 			propertyBreakfast: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBreakfast : false,
 			propertyCancellation: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyCancellation : false,
+
 			propertyRooms: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRooms : 0,
 			propertyBathroom: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBathroom : 0,
 			propertyBeds: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBeds : 0,
@@ -114,22 +120,27 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 	}
 
 	const doDisabledCheck = () => {
+		const data = insertPropertyData;
+
 		if (
-			insertPropertyData.propertyTitle === '' ||
-			insertPropertyData.propertyPrice === 0 || // @ts-ignore
-			insertPropertyData.propertyType === '' || // @ts-ignore
-			insertPropertyData.propertyLocation === '' || // @ts-ignore
-			insertPropertyData.propertyAddress === '' || // @ts-ignore
-			insertPropertyData.propertyBarter === '' || // @ts-ignore
-			insertPropertyData.propertyRent === '' ||
-			insertPropertyData.propertyRooms === 0 ||
-			insertPropertyData.propertyBeds === 0 ||
-			insertPropertyData.propertySquare === 0 ||
-			insertPropertyData.propertyDesc === '' ||
-			insertPropertyData.propertyImages.length === 0
+			!data.propertyTitle ||
+			data.propertyPrice === 0 ||
+			!data.propertyType ||
+			!data.propertyLocation ||
+			!data.propertyAddress ||
+			typeof data.propertyBreakfast !== 'boolean' ||
+			typeof data.propertyCancellation !== 'boolean' ||
+			data.propertyRooms === 0 ||
+			data.propertyBeds === 0 ||
+			data.propertySquare === 0 ||
+			!data.propertyDesc ||
+			!data.propertyImages ||
+			data.propertyImages.length === 0 ||
+			(data.propertyOffer && data.propertyOffer.length < 3) // optional, but must be valid if provided
 		) {
 			return true;
 		}
+		return false;
 	};
 
 	const insertPropertyHandler = useCallback(async () => {
@@ -286,13 +297,13 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
 							<Stack className="config-row">
 								<Stack className="price-year-after-price">
-									<Typography className="title">Barter</Typography>
+									<Typography className="title">Free Breakfast</Typography>
 									<select
 										className={'select-description'}
-										value={insertPropertyData.propertyBarter ? 'yes' : 'no'}
-										defaultValue={insertPropertyData.propertyBarter ? 'yes' : 'no'}
+										value={insertPropertyData.propertyBreakfast ? 'yes' : 'no'}
+										defaultValue={insertPropertyData.propertyBreakfast ? 'yes' : 'no'}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyBarter: value === 'yes' })
+											setInsertPropertyData({ ...insertPropertyData, propertyBreakfast: value === 'yes' })
 										}
 									>
 										<option disabled={true} selected={true}>
@@ -305,13 +316,13 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
-									<Typography className="title">Rent</Typography>
+									<Typography className="title">Free Cancellation</Typography>
 									<select
 										className={'select-description'}
-										value={insertPropertyData.propertyRent ? 'yes' : 'no'}
-										defaultValue={insertPropertyData.propertyRent ? 'yes' : 'no'}
+										value={insertPropertyData.propertyCancellation ? 'yes' : 'no'}
+										defaultValue={insertPropertyData.propertyCancellation ? 'yes' : 'no'}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyRent: value === 'yes' })
+											setInsertPropertyData({ ...insertPropertyData, propertyCancellation: value === 'yes' })
 										}
 									>
 										<option disabled={true} selected={true}>
@@ -367,6 +378,27 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
+									<Typography className="title">Bathroom</Typography>
+									<select
+										className={'select-description'}
+										value={insertPropertyData.propertyBathroom || 'select'}
+										defaultValue={insertPropertyData.propertyBathroom || 'select'}
+										onChange={({ target: { value } }) =>
+											setInsertPropertyData({ ...insertPropertyData, propertyBathroom: parseInt(value) })
+										}
+									>
+										<option disabled={true} selected={true} value={'select'}>
+											Select
+										</option>
+										{[1, 2, 3].map((bed: number) => (
+											<option value={`${bed}`}>{bed}</option>
+										))}
+									</select>
+									<div className={'divider'}></div>
+									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
+								</Stack>
+
+								<Stack className="price-year-after-price">
 									<Typography className="title">Square</Typography>
 									<select
 										className={'select-description'}
@@ -387,6 +419,21 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									</select>
 									<div className={'divider'}></div>
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
+								</Stack>
+							</Stack>
+							<Stack className="config-row">
+								{/* Property Offer - simple text input */}
+								<Stack className="price-year-after-price">
+									<Typography className="title">Property Offer</Typography>
+									<input
+										type="text"
+										className="select-description"
+										value={insertPropertyData.propertyOffer || ''}
+										placeholder="Enter offer details"
+										onChange={({ target: { value } }) =>
+											setInsertPropertyData({ ...insertPropertyData, propertyOffer: value })
+										}
+									/>
 								</Stack>
 							</Stack>
 
@@ -520,13 +567,15 @@ AddProperty.defaultProps = {
 		propertyType: '',
 		propertyLocation: '',
 		propertyAddress: '',
-		propertyBarter: false,
-		propertyRent: false,
+		propertyBreakfast: false,
+		propertyCancellation: false,
 		propertyRooms: 0,
 		propertyBeds: 0,
+		propertyBathroom: 0,
 		propertySquare: 0,
 		propertyDesc: '',
 		propertyImages: [],
+		propertyOffer: '',
 	},
 };
 

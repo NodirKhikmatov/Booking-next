@@ -1,10 +1,11 @@
+import { Box, Stack } from '@mui/material';
+
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import useDeviceDetect from '../hooks/useDeviceDetect';
-import { Stack, Box } from '@mui/material';
 import moment from 'moment';
+import useDeviceDetect from '../hooks/useDeviceDetect';
 
 const Footer = () => {
 	const device = useDeviceDetect();

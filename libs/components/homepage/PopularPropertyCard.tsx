@@ -136,10 +136,18 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 							<img src="/img/icons/bathroom.png" alt="" />
 							<span>{property?.propertyBathroom} bathroom</span>
 						</div>
-						<div>
-							<img src="/img/icons/wife.png" alt="" />
-							<span>{property?.propertyFacility} </span>
-						</div>
+						{property?.propertyFacility && (
+							<div>
+								<img src="/img/icons/wife.png" alt="" />
+								<span>{property?.propertyFacility} </span>
+							</div>
+						)}
+						{property?.propertyParking && (
+							<div>
+								<img src="/img/icons/wife.png" alt="" />
+								<span>{property?.propertyParking} </span>
+							</div>
+						)}
 					</div>
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 				</Box>
