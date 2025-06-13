@@ -679,30 +679,53 @@ body::-webkit-scrollbar {
 						display: flex;
 						flex-direction: column;
 						.logo {
-							width: 128px;
+							width: 188px;
 							height: 52px;
 							cursor: pointer;
 						}
 						span {
-							color: #bebdbd;
+							color: rgb(255, 255, 255);
 							font-family: $font;
-							font-size: 14px;
+							font-size: 15px;
 							font-style: normal;
 							font-weight: 400;
 							text-transform: capitalize;
 						}
 						p {
-							color: #fff;
+							color: rgb(119, 119, 119);
 							font-family: $font;
 							font-size: 15px;
 							font-style: normal;
 							font-weight: 600;
 							line-height: normal;
 							text-transform: capitalize;
+							margin-top: 15px;
+							cursor: pointer;
+							&:hover {
+								color: rgb(170, 132, 83);
+								text-decoration: underline;
+							}
 						}
 						.media-box {
 							margin-top: 12px;
-							color: #929495;
+							display: flex;
+							gap: 1px;
+
+							a {
+								color: rgb(102, 102, 102);
+								margin-top: 5px;
+								display: flex;
+								align-items: center;
+								svg {
+									font-size: 25px; // Adjust size as needed (default is 24px)
+								}
+
+								&:hover {
+									color: rgb(170, 132, 83);
+									text-decoration: underline;
+								}
+							}
+
 							svg {
 								font-size: 32px;
 								margin-right: 22px;
@@ -718,9 +741,9 @@ body::-webkit-scrollbar {
 						display: flex;
 						flex-direction: column;
 						strong {
-							color: #fff;
+							color: rgb(255, 255, 255);
 							font-family: $font;
-							font-size: 15px;
+							font-size: 24px;
 							font-style: normal;
 							font-weight: 600;
 							line-height: normal;
@@ -779,16 +802,16 @@ body::-webkit-scrollbar {
 								line-height: normal;
 								text-transform: capitalize;
 							}
-							span {
+							.span {
 								margin-top: 25px;
-								color: #bebdbd;
+								color: rgb(119, 119, 119);
 								font-family: $font;
-								font-size: 14px;
+								font-size: 18px;
 								font-style: normal;
 								font-weight: 400;
 								cursor: pointer;
 								&:hover {
-									color: #ffffff;
+									color: rgb(170, 132, 83);
 									text-decoration-line: underline;
 								}
 							}

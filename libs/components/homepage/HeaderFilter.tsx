@@ -254,29 +254,29 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 		[searchFilter],
 	);
 
-	const yearStartChangeHandler = async (event: any) => {
-		setYearCheck({ ...yearCheck, start: Number(event.target.value) });
+	// const yearStartChangeHandler = async (event: any) => {
+	// 	setYearCheck({ ...yearCheck, start: Number(event.target.value) });
 
-		setSearchFilter({
-			...searchFilter,
-			search: {
-				...searchFilter.search,
-				periodsRange: { start: Number(event.target.value), end: yearCheck.end },
-			},
-		});
-	};
+	// 	setSearchFilter({
+	// 		...searchFilter,
+	// 		search: {
+	// 			...searchFilter.search,
+	// 			periodsRange: { start: Number(event.target.value), end: yearCheck.end },
+	// 		},
+	// 	});
+	// };
 
-	const yearEndChangeHandler = async (event: any) => {
-		setYearCheck({ ...yearCheck, end: Number(event.target.value) });
+	// const yearEndChangeHandler = async (event: any) => {
+	// 	setYearCheck({ ...yearCheck, end: Number(event.target.value) });
 
-		setSearchFilter({
-			...searchFilter,
-			search: {
-				...searchFilter.search,
-				periodsRange: { start: yearCheck.start, end: Number(event.target.value) },
-			},
-		});
-	};
+	// 	setSearchFilter({
+	// 		...searchFilter,
+	// 		search: {
+	// 			...searchFilter.search,
+	// 			periodsRange: { start: yearCheck.start, end: Number(event.target.value) },
+	// 		},
+	// 	});
+	// };
 
 	const resetFilterHandler = () => {
 		setSearchFilter(initialInput);
@@ -399,7 +399,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 								<CloseIcon />
 							</div>
 							<div className={'top'}>
-								<span>Find your Dream Hotel</span>
+								<span>Find your Dream Place</span>
 								<div className={'search-input-box'}>
 									<img src="/img/icons/search.svg" alt="" />
 									<input
@@ -427,7 +427,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 											>
 												Any
 											</div>
-											{[1, 2, 3, 4, 5].map((bed: number) => (
+											{[1, 2, 3, 4].map((bed: number) => (
 												<div
 													className={`room ${searchFilter?.search?.bedsList?.includes(bed) ? 'active' : ''}`}
 													onClick={() => propertyBedSelectHandler(bed)}
@@ -438,6 +438,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 											))}
 										</div>
 									</div>
+
 									<div className={'box'}>
 										<span>options</span>
 										<div className={'inside'}>
@@ -457,45 +458,6 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 									</div>
 								</div>
 								{/* <div className={'row-box'} style={{ marginTop: '44px' }}>
-									<div className={'box'}>
-										<span>Year Built</span>
-										<div className={'inside space-between align-center'}>
-											<FormControl sx={{ width: '122px' }}>
-												<Select
-													value={yearCheck.start.toString()}
-													onChange={yearStartChangeHandler}
-													displayEmpty
-													inputProps={{ 'aria-label': 'Without label' }}
-													MenuProps={MenuProps}
-												>
-													{propertyYears?.slice(0)?.map((year: number) => (
-														<MenuItem value={year} disabled={yearCheck.end <= year} key={year}>
-															{year}
-														</MenuItem>
-													))}
-												</Select>
-											</FormControl>
-											<div className={'minus-line'}></div>
-											<FormControl sx={{ width: '122px' }}>
-												<Select
-													value={yearCheck.end.toString()}
-													onChange={yearEndChangeHandler}
-													displayEmpty
-													inputProps={{ 'aria-label': 'Without label' }}
-													MenuProps={MenuProps}
-												>
-													{propertyYears
-														?.slice(0)
-														.reverse()
-														.map((year: number) => (
-															<MenuItem value={year} disabled={yearCheck.start >= year} key={year}>
-																{year}
-															</MenuItem>
-														))}
-												</Select>
-											</FormControl>
-										</div>
-									</div>
 									<div className={'box'}>
 										<span>square meter</span>
 										<div className={'inside space-between align-center'}>
