@@ -20,6 +20,7 @@ export const GET_AGENTS = gql`
 				memberDesc
 				memberWarnings
 				memberBlocks
+				memberJob
 				memberProperties
 				memberRank
 				memberPoints
@@ -55,13 +56,14 @@ query GetMember($input: String!) {
         memberImage
         memberAddress
         memberDesc
+		memberJob
         memberProperties
         memberArticles
         memberPoints
         memberLikes
         memberViews
         memberFollowings
-				memberFollowers
+	 memberFollowers
         memberRank
         memberWarnings
         memberBlocks
@@ -161,6 +163,8 @@ export const GET_PROPERTIES = gql`
 				propertyImages
 				propertyDesc
 				propertyBreakfast
+				propertyParking
+				propertyFacility
 				propertyCancellation
 				memberId
 				soldAt

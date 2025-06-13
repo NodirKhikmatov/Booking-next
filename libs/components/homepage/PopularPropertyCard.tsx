@@ -117,15 +117,15 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 					<br />
 					<div className={'price'}>${property.propertyPrice} / Night</div>
 
-					<div className={'options'}>
+					<div className="options">
 						<div>
 							<img src="/img/icons/expand.svg" alt="" />
 							<span>
-								{property?.propertySquare} m<sup>2</sup>{' '}
+								{property?.propertySquare} m<sup>2</sup>
 							</span>
 						</div>
 						<div>
-							<img src="/img/icons/bed.png " alt="" />
+							<img src="/img/icons/bed.png" alt="" />
 							<span>{property?.propertyBeds} bed</span>
 						</div>
 						<div>
@@ -137,32 +137,15 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 							<span>{property?.propertyBathroom} bathroom</span>
 						</div>
 
-						{/* {property?.propertyFacility?.length > 0 && (
-							<div>
-								{property.propertyFacility.map((facility, index) => (
-									<div key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-										<img
-											src={`/img/icons/${facility.toLowerCase().replace(/\s+/g, '')}.png`}
-											alt={facility}
-											width={24}
-											height={24}
-										/>
-
-										<span>{facility}</span>
-									</div>
-								))}
-							</div>
-						)} */}
-
-						<div>
-							<img src="/img/icons/freewife.png" alt="" />
-							<span>{property?.propertyFacility} Free Wife</span>
-						</div>
-						<div>
-							<img src="/img/icons/parking.png" alt="" />
-							<span>{property?.propertyParking} Parking</span>
-						</div>
+						{property?.propertyFacility?.length > 0 &&
+							property.propertyFacility.map((facility, index) => (
+								<div key={index}>
+									<img src={`/img/icons/${facility.toLowerCase().replace(/\s+/g, '')}.png`} alt={facility} />
+									<span>{facility}</span>
+								</div>
+							))}
 					</div>
+
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 				</Box>
 			</Stack>

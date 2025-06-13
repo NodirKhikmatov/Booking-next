@@ -436,18 +436,14 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 											</Stack>
 											<Stack className={'right'}>
 												<Box component={'div'} className={'info'}>
-													<Typography className={'title'}>Year Built</Typography>
-													<Typography className={'data'}>{moment(property?.createdAt).format('YYYY')}</Typography>
-												</Box>
-												<Box component={'div'} className={'info'}>
 													<Typography className={'title'}>Property Type</Typography>
 													<Typography className={'data'}>{property?.propertyType}</Typography>
 												</Box>
 												<Box component={'div'} className={'info'}>
-													<Typography className={'title'}>Property Options</Typography>
+													<Typography className={'title'}> Ameneties</Typography>
 													<Typography className={'data'}>
-														For {property?.propertyBreakfast && 'Free Breakfast'}{' '}
-														{property?.propertyCancellation && 'Free Cancellation'}
+														{property?.propertyBreakfast && ' Breakfast'}{' '}
+														{property?.propertyCancellation && 'Cancellation'}
 													</Typography>
 												</Box>
 											</Stack>

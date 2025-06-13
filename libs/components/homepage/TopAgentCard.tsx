@@ -36,6 +36,7 @@ const TopAgentCard = (props: TopAgentProps) => {
 
 				<div className="agent-info">
 					<strong>{agent?.memberNick}</strong>
+					<span>{agent?.memberJob}</span>
 					<span>{agent?.memberType}</span>
 				</div>
 			</Stack>
