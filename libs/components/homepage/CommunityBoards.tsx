@@ -1,5 +1,5 @@
+import { Box, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { Stack, Typography } from '@mui/material';
 
 import { BoardArticle } from '../../types/board-article/board-article';
 import { BoardArticleCategory } from '../../enums/board-article.enum';
@@ -54,9 +54,10 @@ const CommunityBoards = () => {
 		return (
 			<Stack className={'community-board'}>
 				<Stack className={'container'}>
-					<Stack>
-						<Typography variant={'h1'}>COMMUNITY BOARD HIGHLIGHTS</Typography>
-					</Stack>
+					<Box component={'div'} className={'left'}>
+						<img src="icons/before.png" alt="" width="24" height="24" />
+						<span>Check Latest News</span>
+					</Box>
 					<Stack className="community-main">
 						<Stack className={'community-left'}>
 							<Stack className={'content-top'}>
@@ -68,19 +69,6 @@ const CommunityBoards = () => {
 							<Stack className={'card-wrap'}>
 								{newsArticles.map((article, index) => {
 									return <CommunityCard vertical={true} article={article} index={index} key={article?._id} />;
-								})}
-							</Stack>
-						</Stack>
-						<Stack className={'community-right'}>
-							<Stack className={'content-top'}>
-								<Link href={'/community?articleCategory=FREE'}>
-									<span>Free</span>
-								</Link>
-								<img src="/img/icons/arrowBig.svg" alt="" />
-							</Stack>
-							<Stack className={'card-wrap vertical'}>
-								{freeArticles.map((article, index) => {
-									return <CommunityCard vertical={false} article={article} index={index} key={article?._id} />;
 								})}
 							</Stack>
 						</Stack>

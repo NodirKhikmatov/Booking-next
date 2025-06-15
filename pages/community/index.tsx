@@ -109,10 +109,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 						<Stack className="main-box">
 							<Stack className="left-config">
 								<Stack className={'image-info'}>
-									<img src={'/img/logo/logoText.svg'} />
-									<Stack className={'community-name'}>
-										<Typography className={'name'}>News</Typography>
-									</Stack>
+									<img src={'/img/logo/booking.webp'} />
 								</Stack>
 
 								<TabList
@@ -137,11 +134,6 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 										value={'NEWS'}
 										label={'News'}
 										className={`tab-button ${searchCommunity.search.articleCategory == 'NEWS' ? 'active' : ''}`}
-									/>
-									<Tab
-										value={'HUMOR'}
-										label={'Humor'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'HUMOR' ? 'active' : ''}`}
 									/>
 								</TabList>
 							</Stack>

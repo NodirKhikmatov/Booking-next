@@ -80,11 +80,6 @@ const TopAgents = (props: TopAgentsProps) => {
 								<span>Expert Team Persons</span>
 							</p>
 						</Box>
-						<Box component={'div'} className={'right'}>
-							<div className={'more-box'}>
-								<img src="/img/icons/rightup.svg" alt="" />
-							</div>
-						</Box>
 					</Stack>
 					<Stack className={'wrapper'}>
 						<Box component={'div'} className={'switch-btn swiper-agents-prev'}>

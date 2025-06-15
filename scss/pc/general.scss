@@ -22,7 +22,7 @@
 			display: flex;
 			align-items: center;
 			border-radius: 6px;
-			background: #eb6753;
+			background: #e0b1aa;
 			img {
 				width: 14px;
 				height: 14px;
@@ -161,14 +161,23 @@
 	position: relative;
 	margin-right: 27px;
 	margin-bottom: 34px;
+	padding: 5px;
+	box-sizing: border-box;
+	border: 3px solid black;
 	display: flex;
 	flex-direction: column;
 	.agent-img {
 		border-radius: 12px;
-		width: 233px;
-		height: 273px;
+		width: 275px;
+		height: 353px;
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
+		object-fit: cover;
+		transition: transform 0.4s ease;
+		&:hover {
+			transform: scale(1.05);
+			z-index: 1;
+		}
 		cursor: pointer;
 		div {
 			position: absolute;
@@ -194,6 +203,7 @@
 		.agent-info {
 			display: flex;
 			flex-direction: column;
+
 			strong {
 				color: #181a20;
 				font-family: $font;
@@ -202,6 +212,13 @@
 				font-weight: 600;
 				line-height: normal;
 				cursor: pointer;
+				font-size: 24px;
+				font-weight: 400;
+				text-transform: capitalize;
+				cursor: pointer;
+				&:hover {
+					color: #b18e60;
+				}
 			}
 			span {
 				color: #181a20;

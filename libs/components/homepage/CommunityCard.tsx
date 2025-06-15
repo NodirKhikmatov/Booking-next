@@ -1,9 +1,9 @@
-import React from 'react';
-import Link from 'next/link';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Box } from '@mui/material';
-import Moment from 'react-moment';
 import { BoardArticle } from '../../types/board-article/board-article';
+import { Box } from '@mui/material';
+import Link from 'next/link';
+import Moment from 'react-moment';
+import React from 'react';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 
 interface CommunityCardProps {
 	vertical: boolean;
@@ -29,25 +29,8 @@ const CommunityCard = (props: CommunityCardProps) => {
 							<div>{index + 1}</div>
 						</div>
 						<strong>{article?.articleTitle}</strong>
-						<span>Free Board</span>
 					</Box>
 				</Link>
-			);
-		} else {
-			return (
-				<>
-					<Link href={`/community/detail?articleCategory=${article?.articleCategory}&id=${article?._id}`}>
-						<Box component={'div'} className="horizontal-card">
-							<img src={articleImage} alt="" />
-							<div>
-								<strong>{article.articleTitle}</strong>
-								<span>
-									<Moment format="DD.MM.YY">{article?.createdAt}</Moment>
-								</span>
-							</div>
-						</Box>
-					</Link>
-				</>
 			);
 		}
 	}

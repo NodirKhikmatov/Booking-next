@@ -1,6 +1,7 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { REACT_APP_API_URL, topPropertyRank } from '../../config';
 
+import { CartItem } from '../../types/cart';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
@@ -9,8 +10,10 @@ import { Property } from '../../types/property/property';
 import React from 'react';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { formatterStr } from '../../utils';
+import property from '../../../pages/property';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
 
 interface PropertyCardType {
@@ -20,13 +23,36 @@ interface PropertyCardType {
 	recentlyVisited?: boolean;
 }
 
+const LOCAL_STORAGE_KEY = 'my-cart';
+
 const PropertyCard = (props: PropertyCardType) => {
 	const { property, likePropertyHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
+	const router = useRouter(); // ✅ Needed for routing
+
 	const imagePath: string = property?.propertyImages[0]
 		? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
 		: '/img/banner/header1.svg';
+
+	// ✅ Now uses property from props
+	const addToCart = () => {
+		const existingCart = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]') as CartItem[];
+
+		const newItem: CartItem = {
+			id: property._id,
+			name: property.propertyTitle,
+			price: property.propertyPrice,
+			image: imagePath,
+			quantity: 1,
+		};
+
+		const updatedCart = existingCart.find((item) => item.id === newItem.id)
+			? existingCart.map((item) => (item.id === newItem.id ? { ...item, quantity: item.quantity + 1 } : item))
+			: [...existingCart, newItem];
+
+		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedCart));
+	};
 
 	if (device === 'mobile') {
 		return <div>PROPERTY CARD</div>;
@@ -109,7 +135,6 @@ const PropertyCard = (props: PropertyCardType) => {
 							<img src="/img/icons/expand.svg" alt="" />
 
 							<Typography>
-							
 								{property?.propertySquare} m<sup>2</sup>
 							</Typography>
 						</Stack>
@@ -156,7 +181,10 @@ const PropertyCard = (props: PropertyCardType) => {
 						<Box component={'div'} className={'price-box'}>
 							<Typography className={'price-title'}>
 								${formatterStr(property?.propertyPrice)}
-								<span>/day</span>{' '}
+								<span>/day</span>
+								<Button onClick={addToCart} variant="contained" color="primary">
+									Go to Cart
+								</Button>
 							</Typography>
 						</Box>
 					</Stack>

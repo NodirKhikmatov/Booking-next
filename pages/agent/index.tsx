@@ -9,6 +9,7 @@ import { GET_AGENTS } from '../../apollo/user/query';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
 import { Member } from '../../libs/types/member/member';
+import { Message } from '@mui/icons-material';
 import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
@@ -211,7 +212,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 AgentList.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 10,
+		limit: 4,
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {},

@@ -1011,7 +1011,7 @@
 				}
 
 				.section-title img {
-					width: 4s4px;
+					width: 44px;
 					height: auto;
 					vertical-align: middle;
 				}
@@ -1110,9 +1110,36 @@
 			.container {
 				flex-direction: column;
 				align-items: center;
+				.left {
+					display: inline-block;
+					align-items: center;
+					font-family: 'Barlow Condensed', sans-serif;
+					font-size: 18px;
+					letter-spacing: 7.8px;
+					font-weight: 30;
+					color: #181a20;
+				}
+
+				.left img {
+					width: 34px;
+					height: 14px;
+					vertical-align: middle;
+				}
+
+				span {
+					color: #333;
+					font-family: $font;
+					font-size: 16px;
+					font-style: normal;
+					margin-top: 15px;
+					font-weight: 300;
+					line-height: 26px;
+				}
+
 				.community-main {
 					width: 100%;
-					margin-top: 60px;
+					// background-color: red;
+					margin-top: 20px;
 					display: flex;
 					flex-direction: row;
 					justify-content: space-between;
@@ -1126,13 +1153,14 @@
 						height: 30px;
 						display: flex;
 						flex-direction: row;
-						justify-content: flex-end;
+						position: absolute;
+						justify-content: center;
 						align-items: center;
 						span {
 							font-family: $font;
 							font-style: normal;
 							font-weight: 500;
-							font-size: 16px;
+							font-size: 36px;
 							line-height: 36px;
 							color: #616161;
 							cursor: pointer;
@@ -1150,12 +1178,16 @@
 						flex-direction: column;
 						.card-wrap {
 							display: flex;
+							margin-top: 20px;
 							flex-direction: row;
-							flex-wrap: wrap;
+							align-items: center;
+							justify-content: flex-start;
+							background-color: hotpink;
 							.vertical-card {
 								margin-right: 12px;
 								margin-bottom: 18px;
-								width: 202px;
+								width: 232px;
+								height: 230px;
 								display: flex;
 								flex-direction: column;
 								cursor: pointer;
@@ -1187,6 +1219,9 @@
 									font-family: $font;
 									font-style: normal;
 									font-weight: 700;
+									display: flex;
+									align-items: center;
+									justify-content: center;
 									font-size: 18px;
 									line-height: 36px;
 									letter-spacing: 0.105em;

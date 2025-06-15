@@ -35,6 +35,11 @@ const withLayoutBasic = (Component: any) => {
 					desc = 'We are glad to see you again!';
 					bgImage = '/img/banner/11.avif';
 					break;
+				case '/Cart':
+					title = 'Cart';
+					desc = 'Home / For cancellation';
+					bgImage = '/img/banner/header2.svg';
+					break;
 				case '/agent':
 					title = 'Team';
 					desc = 'Home / cancellation';
@@ -60,6 +65,7 @@ const withLayoutBasic = (Component: any) => {
 					desc = 'Home / For cancellation';
 					bgImage = '/img/banner/header2.svg';
 					break;
+
 				case '/cs':
 					title = 'CS';
 					desc = 'We are glad to see you again!';
