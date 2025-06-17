@@ -26,12 +26,14 @@ import PropertyBigCard from '../../libs/components/common/PropertyBigCard';
 import { REACT_APP_API_URL } from '../../libs/config';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Review from '../../libs/components/property/Review';
+import { T } from '../../libs/types/common';
 import WestIcon from '@mui/icons-material/West';
 import { formatterStr } from '../../libs/utils';
 import moment from 'moment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { userVar } from '../../apollo/store';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 
@@ -64,6 +66,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 	const [createComment] = useMutation(CREATE_COMMENT);
+	const { t } = useTranslation('common');
 
 	const {
 		loading: getPropertyLoading,
@@ -148,6 +151,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 		try {
 			//execute likePropertyHandler Mutation
 			if (!id) return;
+			// @ts-ignore
 			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 			await likeTargetProperty({
 				variables: { input: id },
@@ -175,6 +179,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	const createCommentHandler = async () => {
 		try {
+			// @ts-ignore
 			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 			await createComment({ variables: { input: insertCommentData } });
 
@@ -333,31 +338,14 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 										</Stack>
 
 										<Stack className="option" direction="row" alignItems="center" spacing={1}>
-											<div
-												style={{
-													width: '24px',
-													height: '24px',
-													backgroundColor: 'rgb(170, 132, 83)',
-													WebkitMask: 'url(/img/icons/wife.png) no-repeat center / contain',
-													mask: 'url(/img/icons/freewife.png) no-repeat center / contain',
-													display: 'inline-block',
-												}}
-											/>
-											<Typography>{property?.propertyFacility}Wife available</Typography>
-										</Stack>
-
-										<Stack className="option" direction="row" alignItems="center" spacing={1}>
-											<div
-												style={{
-													width: '24px',
-													height: '24px',
-													backgroundColor: 'rgb(170, 132, 83)',
-													WebkitMask: 'url(/img/icons/parking.png) no-repeat center / contain',
-													mask: 'url(/img/icons/parking.png) no-repeat center / contain',
-												}}
-											/>
-
-											<Typography>{property?.propertyParking} Parking</Typography>
+											{property &&
+												property?.propertyFacility?.length > 0 &&
+												property.propertyFacility?.map((facility, index) => (
+													<div key={index} className="optionss">
+														<img src={`/img/icons/${facility.toLowerCase().replace(/\s+/g, '')}.png`} alt={facility} />
+														<span>{facility}</span>
+													</div>
+												))}
 										</Stack>
 									</Stack>
 								</Stack>

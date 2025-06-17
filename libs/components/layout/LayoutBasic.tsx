@@ -31,7 +31,7 @@ const withLayoutBasic = (Component: any) => {
 
 			switch (router.pathname) {
 				case '/property':
-					title = 'Hotel & Villas';
+					title = 'Hotels & Villas';
 					desc = 'We are glad to see you again!';
 					bgImage = '/img/banner/11.avif';
 					break;
@@ -102,7 +102,7 @@ const withLayoutBasic = (Component: any) => {
 				<>
 					<Head>
 						<title>Parador</title>
-						<meta name={'title'} content={`Nestar`} />
+						<meta name={'title'} content={`Parador`} />
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id={'top'}>
@@ -124,7 +124,7 @@ const withLayoutBasic = (Component: any) => {
 				<>
 					<Head>
 						<title>Parador</title>
-						<meta name={'title'} content={`Nestar`} />
+						<meta name={'title'} content={`Parador`} />
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id={'top'}>
@@ -139,8 +139,9 @@ const withLayoutBasic = (Component: any) => {
 							}}
 						>
 							{/* Background image */}
-							<Box
-								sx={{
+
+							<div
+								style={{
 									position: 'absolute',
 									top: 0,
 									left: 0,
@@ -150,8 +151,8 @@ const withLayoutBasic = (Component: any) => {
 									backgroundSize: 'cover',
 									backgroundPosition: 'center',
 									backgroundRepeat: 'no-repeat',
-									backgroundColor: 'rgba(0, 0, 0, 0.8)', // darkness level
-									backgroundBlendMode: 'multiply', // or try 'multiply'
+									backgroundColor: 'rgba(0, 0, 0, 0.8)',
+									backgroundBlendMode: 'multiply',
 									zIndex: -1,
 								}}
 							/>
@@ -159,7 +160,7 @@ const withLayoutBasic = (Component: any) => {
 							{/* Foreground content */}
 							<Stack
 								className="container"
-								sx={{
+								style={{
 									position: 'relative',
 									zIndex: 1,
 									color: 'white',
@@ -170,7 +171,8 @@ const withLayoutBasic = (Component: any) => {
 								}}
 							>
 								{/* Breadcrumb with hover link */}
-								<Box sx={{ fontSize: '14px', color: '#ddd', mb: 1 }}>
+
+								<div style={{ fontSize: '14px', color: '#ddd' }}>
 									<span style={{ display: 'block', marginBottom: '30px', fontSize: '60px' }}>
 										{t(memoizedValues.title)}
 									</span>
@@ -179,17 +181,29 @@ const withLayoutBasic = (Component: any) => {
 										href="/"
 										sx={{
 											color: '#ddd',
-											textDecoration: 'underline',
+											textDecoration: 'none',
 											'&:hover': {
 												color: '#b18e60',
 											},
 										}}
 									>
-										Home
+										{t('Home')}
 									</Box>
-									<span style={{ margin: '0 6px' }}>/</span>
+
+									<span style={{ margin: '0 6px' }}>
+										<img
+											style={{
+												margin: '4px 6px',
+												width: '11px',
+												height: '11px',
+												filter: 'brightness(0.4) invert(1)', // turns black to white
+											}}
+											src="/img/icons/arrow.png"
+											alt=""
+										/>
+									</span>
 									<strong style={{ fontSize: '14px' }}>{t(memoizedValues.title)}</strong>
-								</Box>
+								</div>
 							</Stack>
 						</Stack>
 

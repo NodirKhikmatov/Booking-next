@@ -138,7 +138,8 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 						</div>
 
 						{property?.propertyFacility?.length > 0 &&
-							property.propertyFacility.map((facility, index) => (
+						// @ts-ignore
+							property.propertyFacility?.map((facility, index) => (
 								<div key={index}>
 									<img src={`/img/icons/${facility.toLowerCase().replace(/\s+/g, '')}.png`} alt={facility} />
 									<span>{facility}</span>

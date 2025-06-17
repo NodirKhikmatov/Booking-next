@@ -44,9 +44,7 @@ const AgentCard = (props: AgentCardProps) => {
 							backgroundPosition: 'center',
 							backgroundRepeat: 'no-repeat',
 						}}
-					>
-						<div>{agent?.memberProperties} properties</div>
-					</Box>
+					></Box>
 				</Link>
 
 				<Stack className={'agent-desc'}>
@@ -54,7 +52,7 @@ const AgentCard = (props: AgentCardProps) => {
 						<Link
 							href={{
 								pathname: '/agent/detail',
-								query: { agentId: 'id' },
+								query: { agentId: agent?._id },
 							}}
 						>
 							<strong>{agent?.memberFullName ?? agent?.memberNick}</strong>

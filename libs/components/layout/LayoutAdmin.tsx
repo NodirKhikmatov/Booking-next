@@ -1,23 +1,25 @@
-import type { ComponentType } from 'react';
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import MenuList from '../admin/AdminMenuList';
-import Toolbar from '@mui/material/Toolbar';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import { Menu, MenuItem } from '@mui/material';
-import Drawer from '@mui/material/Drawer';
+import React, { useEffect, useState } from 'react';
+import { getJwtToken, logOut, updateUserInfo } from '../../auth';
+
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
+import type { ComponentType } from 'react';
 import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-import { getJwtToken, logOut, updateUserInfo } from '../../auth';
-import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
-import { REACT_APP_API_URL } from '../../config';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import { MemberType } from '../../enums/member.enum';
+import MenuList from '../admin/AdminMenuList';
+import { REACT_APP_API_URL } from '../../config';
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { userVar } from '../../../apollo/store';
+
 const drawerWidth = 280;
 
 const withAdminLayout = (Component: ComponentType) => {

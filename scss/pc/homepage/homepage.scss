@@ -5,6 +5,7 @@
 		position: relative;
 		width: 100%;
 		height: auto;
+		box-sizing: border-box;
 		.info-box {
 			width: 100%;
 			display: flex;
@@ -1138,7 +1139,6 @@
 
 				.community-main {
 					width: 100%;
-					// background-color: red;
 					margin-top: 20px;
 					display: flex;
 					flex-direction: row;
@@ -1172,28 +1172,31 @@
 						}
 					}
 					.community-left {
-						width: 642px;
-						height: auto;
+						width: 100%;
+						height: 100%;
 						display: flex;
+						height: auto;
 						flex-direction: column;
 						.card-wrap {
 							display: flex;
-							margin-top: 20px;
+							margin-top: 80px;
 							flex-direction: row;
 							align-items: center;
+							width: 95.09%;
 							justify-content: flex-start;
-							background-color: hotpink;
+							max-width: 100%;
+							overflow-x: auto;
 							.vertical-card {
 								margin-right: 12px;
 								margin-bottom: 18px;
-								width: 232px;
-								height: 230px;
+								width: auto;
+								height: 430px;
 								display: flex;
 								flex-direction: column;
 								cursor: pointer;
 								.community-img {
-									width: 100%;
-									height: 141px;
+									width: 400px;
+									height: 600px;
 									background-size: cover;
 									background-repeat: round;
 									border-radius: 5px;

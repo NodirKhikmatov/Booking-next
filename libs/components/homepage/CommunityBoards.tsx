@@ -6,13 +6,18 @@ import { BoardArticleCategory } from '../../enums/board-article.enum';
 import CommunityCard from './CommunityCard';
 import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
 import Link from 'next/link';
+import { T } from '../../types/common';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useQuery } from '@apollo/client';
+import { useTranslation } from 'next-i18next';
 
 const CommunityBoards = () => {
 	const device = useDeviceDetect();
+	const { t } = useTranslation('common');
+
 	const [searchCommunity, setSearchCommunity] = useState({
 		page: 1,
+		limit: 3,
 		sort: 'articleViews',
 		direction: 'DESC',
 	});
@@ -56,18 +61,18 @@ const CommunityBoards = () => {
 				<Stack className={'container'}>
 					<Box component={'div'} className={'left'}>
 						<img src="icons/before.png" alt="" width="24" height="24" />
-						<span>Check Latest News</span>
+						<span>{t('Check Latest News')}</span>
 					</Box>
 					<Stack className="community-main">
 						<Stack className={'community-left'}>
 							<Stack className={'content-top'}>
 								<Link href={'/community?articleCategory=NEWS'}>
-									<span>News</span>
+									<span>{t('News')}</span>
 								</Link>
 								<img src="/img/icons/arrowBig.svg" alt="" />
 							</Stack>
 							<Stack className={'card-wrap'}>
-								{newsArticles.map((article, index) => {
+								{newsArticles?.map((article, index) => {
 									return <CommunityCard vertical={true} article={article} index={index} key={article?._id} />;
 								})}
 							</Stack>

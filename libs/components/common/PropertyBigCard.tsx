@@ -45,11 +45,11 @@ const PropertyBigCard = (props: PropertyBigCardProps) => {
 					<p className={'desc'}>{property?.propertyAddress}</p>
 					<div className={'options'}>
 						<div>
-							<img src="/img/icons/bed.svg" alt="" />
+							<img src="/img/icons/bed.png" alt="" />
 							<span>{property?.propertyBeds} bed</span>
 						</div>
 						<div>
-							<img src="/img/icons/room.svg" alt="" />
+							<img src="/img/icons/room.png" alt="" />
 							<span>{property?.propertyRooms} rooms</span>
 						</div>
 						<div>

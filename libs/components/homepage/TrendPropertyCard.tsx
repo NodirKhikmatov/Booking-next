@@ -17,7 +17,7 @@ interface TrendPropertyCardProps {
 }
 
 const TrendPropertyCard = (props: TrendPropertyCardProps) => {
-	const { property } = props;
+	const { property, likePropertyHandler } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);

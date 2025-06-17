@@ -16,6 +16,7 @@ import { T } from '../../libs/types/common';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -32,6 +33,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	const [searchCommunity, setSearchCommunity] = useState<BoardArticlesInquiry>(initialInput);
 	const [boardArticles, setBoardArticles] = useState<BoardArticle[]>([]);
 	const [totalCount, setTotalCount] = useState<number>(0);
+	const { t } = useTranslation('common');
 	if (articleCategory) initialInput.search.articleCategory = articleCategory;
 
 	/** APOLLO REQUESTS **/
@@ -87,6 +89,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 		try {
 			e.stopPropagation();
 			if (!id) return;
+			// @ts-ignore
 			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 			await likeTargetBoardArticle({
 				variables: { input: id },
@@ -122,17 +125,17 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 								>
 									<Tab
 										value={'FREE'}
-										label={'Free Board'}
+										label={t('free_board')}
 										className={`tab-button ${searchCommunity.search.articleCategory == 'FREE' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'RECOMMEND'}
-										label={'Recommendation'}
+										label={t('recommendation')}
 										className={`tab-button ${searchCommunity.search.articleCategory == 'RECOMMEND' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'NEWS'}
-										label={'News'}
+										label={t('news')}
 										className={`tab-button ${searchCommunity.search.articleCategory == 'NEWS' ? 'active' : ''}`}
 									/>
 								</TabList>
@@ -141,10 +144,10 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 								<Stack className="panel-config">
 									<Stack className="title-box">
 										<Stack className="left">
-											<Typography className="title">{searchCommunity.search.articleCategory} BOARD</Typography>
-											<Typography className="sub-title">
-												Express your opinions freely here without content restrictions
+											<Typography className="title">
+												{searchCommunity.search.articleCategory} {t('board')}
 											</Typography>
+											<Typography className="sub-title">{t('express_opinions')}</Typography>
 										</Stack>
 										<Button
 											onClick={() =>
@@ -157,7 +160,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 											}
 											className="right"
 										>
-											Write
+											{t('write')}
 										</Button>
 									</Stack>
 
@@ -176,7 +179,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 											) : (
 												<Stack className={'no-data'}>
 													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
+													<p>{t('no_article_found')}</p>
 												</Stack>
 											)}
 										</Stack>
@@ -196,7 +199,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 											) : (
 												<Stack className={'no-data'}>
 													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
+													<p>{t('no_article_found')}</p>
 												</Stack>
 											)}
 										</Stack>
@@ -216,12 +219,12 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 											) : (
 												<Stack className={'no-data'}>
 													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
+													<p>{t('no_article_found')}</p>
 												</Stack>
 											)}
 										</Stack>
 									</TabPanel>
-									<TabPanel value="HUMOR">
+									{/* <TabPanel value="HUMOR">
 										<Stack className="list-box">
 											{totalCount ? (
 												boardArticles?.map((boardArticle: BoardArticle) => {
@@ -236,11 +239,11 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 											) : (
 												<Stack className={'no-data'}>
 													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
+													<p>{t('no_article_found')}</p>
 												</Stack>
 											)}
 										</Stack>
-									</TabPanel>
+									</TabPanel> */}
 								</Stack>
 							</Stack>
 						</Stack>
@@ -258,9 +261,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 								/>
 							</Stack>
 							<Stack className="total-result">
-								<Typography>
-									Total {totalCount} article{totalCount > 1 ? 's' : ''} available
-								</Typography>
+								<Typography>{t('total_article_available', { count: totalCount })}</Typography>
 							</Stack>
 						</Stack>
 					)}

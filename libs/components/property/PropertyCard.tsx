@@ -11,9 +11,11 @@ import React from 'react';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { formatterStr } from '../../utils';
 import property from '../../../pages/property';
+import { useCartStore } from '../../cart-store';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { userVar } from '../../../apollo/store';
 
 interface PropertyCardType {
@@ -29,13 +31,14 @@ const PropertyCard = (props: PropertyCardType) => {
 	const { property, likePropertyHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
-	const router = useRouter(); // ✅ Needed for routing
+	const router = useRouter();
+	const { increment } = useCartStore();
+	const { t } = useTranslation('common');
 
 	const imagePath: string = property?.propertyImages[0]
 		? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
 		: '/img/banner/header1.svg';
 
-	// ✅ Now uses property from props
 	const addToCart = () => {
 		const existingCart = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]') as CartItem[];
 
@@ -51,11 +54,13 @@ const PropertyCard = (props: PropertyCardType) => {
 			? existingCart.map((item) => (item.id === newItem.id ? { ...item, quantity: item.quantity + 1 } : item))
 			: [...existingCart, newItem];
 
+		const length = updatedCart.length;
+		increment(length);
 		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedCart));
 	};
 
 	if (device === 'mobile') {
-		return <div>PROPERTY CARD</div>;
+		return <div>{t('property.property_card_mobile')}</div>;
 	} else {
 		return (
 			<Stack className="card-config">
@@ -72,7 +77,7 @@ const PropertyCard = (props: PropertyCardType) => {
 					{property && property?.propertyRank > topPropertyRank && (
 						<Box component={'div'} className={'top-badge'}>
 							<img src="/img/icons/electricity.svg" alt="" />
-							<Typography>TOP</Typography>
+							<Typography>{t('property.top_badge')}</Typography>
 						</Box>
 					)}
 				</Stack>
@@ -121,21 +126,21 @@ const PropertyCard = (props: PropertyCardType) => {
 					</Stack>
 					<Stack className="options">
 						<Stack className="option">
-							<img src="/img/icons/bed.png " alt="" /> <Typography>{property.propertyBeds} bed</Typography>
+							<img src="/img/icons/bed.png " alt="" />
+							<Typography>{t('property.bed_count', { count: property.propertyBeds })}</Typography>
 						</Stack>
 						<Stack className="option">
 							<img src="/img/icons/room.png" alt="" />
-							<Typography>{property.propertyRooms} room</Typography>
+							<Typography>{t('property.room_count', { count: property.propertyRooms })}</Typography>
 						</Stack>
 						<Stack className="option">
 							<img src="/img/icons/bathroom.png" alt="" />
-							<Typography>{property.propertyBathroom} Bathrooms</Typography>
+							<Typography>{t('property.bathroom_count', { count: property?.propertyBathroom })}</Typography>
 						</Stack>
 						<Stack className="option">
 							<img src="/img/icons/expand.svg" alt="" />
-
 							<Typography>
-								{property?.propertySquare} m<sup>2</sup>
+								{property?.propertySquare} {t('property.square_meters')}
 							</Typography>
 						</Stack>
 					</Stack>
@@ -157,7 +162,7 @@ const PropertyCard = (props: PropertyCardType) => {
 								>
 									<path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"></path>
 								</svg>
-								Free Breakfast Included
+								{t('property.free_breakfast')}
 							</Typography>
 
 							<Typography
@@ -175,16 +180,18 @@ const PropertyCard = (props: PropertyCardType) => {
 								>
 									<path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"></path>
 								</svg>
-								Free Cancellation Available
+								{t('property.free_cancellation')}
 							</Typography>
 						</Stack>
 						<Box component={'div'} className={'price-box'}>
 							<Typography className={'price-title'}>
 								${formatterStr(property?.propertyPrice)}
-								<span>/day</span>
-								<Button onClick={addToCart} variant="contained" color="primary">
-									Go to Cart
-								</Button>
+								<span>{t('property.per_day')}</span>
+								{user?.memberType == 'USER' && (
+									<Button onClick={addToCart} variant="continued">
+										{t('property.add_to_cart')}
+									</Button>
+								)}
 							</Typography>
 						</Box>
 					</Stack>

@@ -305,14 +305,14 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 AgentDetail.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 9,
+		limit: 3,
 		search: {
 			memberId: '',
 		},
 	},
 	initialComment: {
 		page: 1,
-		limit: 5,
+		limit: 3,
 		sort: 'createdAt',
 		direction: 'ASC',
 		search: {

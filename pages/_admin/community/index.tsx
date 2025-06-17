@@ -13,6 +13,7 @@ import Divider from '@mui/material/Divider';
 import { GET_ALL_BOARD_ARTICLES_BY_ADMIN } from '../../../apollo/admin/query';
 import type { NextPage } from 'next';
 import Select from '@mui/material/Select';
+import { T } from '../../../libs/types/common';
 import { TabContext } from '@mui/lab';
 import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';

@@ -19,6 +19,7 @@ import WriteArticle from '../../libs/components/mypage/WriteArticle';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { userVar } from '../../apollo/store';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
@@ -32,12 +33,14 @@ const MyPage: NextPage = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
+	const { t } = useTranslation('common');
 	const category: any = router.query?.category ?? 'myProfile';
 
 	/** APOLLO REQUESTS **/
 	const [subscribe] = useMutation(SUBSCRIBE);
 	const [unsubscribe] = useMutation(UNSUBSCRIBE);
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
+
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (!user._id) router.push('/').then();
@@ -55,7 +58,7 @@ const MyPage: NextPage = () => {
 					input: id,
 				},
 			});
-			await sweetTopSmallSuccessAlert('Subscribed!', 800);
+			await sweetTopSmallSuccessAlert(t('subscribed'), 800);
 			await refetch({ input: query });
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
@@ -72,7 +75,7 @@ const MyPage: NextPage = () => {
 					input: id,
 				},
 			});
-			await sweetTopSmallSuccessAlert('Unsubscribed!', 800);
+			await sweetTopSmallSuccessAlert(t('unsubscribed'), 800);
 			await refetch({ input: query });
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
@@ -86,7 +89,7 @@ const MyPage: NextPage = () => {
 
 			await likeTargetMember({ variables: { input: id } });
 
-			await sweetTopSmallSuccessAlert('Success!', 800);
+			await sweetTopSmallSuccessAlert(t('success'), 800);
 			await refetch({ input: query });
 		} catch (err: any) {
 			console.log('ERROR, likeMemberHandler:', err.message);
@@ -104,7 +107,7 @@ const MyPage: NextPage = () => {
 	};
 
 	if (device === 'mobile') {
-		return <div>MY PAGE</div>;
+		return <div>{t('my_page')}</div>;
 	} else {
 		return (
 			<div id="my-page" style={{ position: 'relative' }}>

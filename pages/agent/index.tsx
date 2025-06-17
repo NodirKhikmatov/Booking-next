@@ -10,10 +10,13 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import { LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
 import { Member } from '../../libs/types/member/member';
 import { Message } from '@mui/icons-material';
+import { Messages } from '../../libs/config';
 import { NextPage } from 'next';
+import { T } from '../../libs/types/common';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -26,7 +29,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
-	const [filterSortName, setFilterSortName] = useState('Recent');
+	const [filterSortName, setFilterSortName] = useState('');
 	const [sortingOpen, setSortingOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [searchFilter, setSearchFilter] = useState<any>(
@@ -36,6 +39,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 	const [total, setTotal] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [searchText, setSearchText] = useState<string>('');
+	const { t } = useTranslation('common');
 
 	/** APOLLO REQUESTS **/
 
@@ -57,6 +61,21 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 	});
 
 	/** LIFECYCLES **/
+	useEffect(() => {
+		// Set initial filter sort name based on current sort
+		if (searchFilter.sort === 'createdAt' && searchFilter.direction === 'DESC') {
+			setFilterSortName(t('recent'));
+		} else if (searchFilter.sort === 'createdAt' && searchFilter.direction === 'ASC') {
+			setFilterSortName(t('oldest'));
+		} else if (searchFilter.sort === 'memberLikes') {
+			setFilterSortName(t('likes'));
+		} else if (searchFilter.sort === 'memberViews') {
+			setFilterSortName(t('views'));
+		} else {
+			setFilterSortName(t('recent'));
+		}
+	}, [t, searchFilter.sort, searchFilter.direction]);
+
 	useEffect(() => {
 		if (router.query.input) {
 			const input_obj = JSON.parse(router?.query?.input as string);
@@ -82,19 +101,19 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 		switch (e.currentTarget.id) {
 			case 'recent':
 				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: 'DESC' });
-				setFilterSortName('Recent');
+				setFilterSortName(t('recent'));
 				break;
 			case 'old':
 				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: 'ASC' });
-				setFilterSortName('Oldest order');
+				setFilterSortName(t('oldest'));
 				break;
 			case 'likes':
 				setSearchFilter({ ...searchFilter, sort: 'memberLikes', direction: 'DESC' });
-				setFilterSortName('Likes');
+				setFilterSortName(t('likes'));
 				break;
 			case 'views':
 				setSearchFilter({ ...searchFilter, sort: 'memberViews', direction: 'DESC' });
-				setFilterSortName('Views');
+				setFilterSortName(t('views'));
 				break;
 		}
 		setSortingOpen(false);
@@ -117,7 +136,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 				variables: { input: id },
 			});
 			await getAgentsRefetch({ input: searchFilter });
-			await sweetTopSmallSuccessAlert('success', 800);
+			await sweetTopSmallSuccessAlert(t('success'), 800);
 		} catch (err: any) {
 			console.log('Error:likePropertyHandler', err.message);
 			sweetMixinErrorAlert(err.message).then();
@@ -125,7 +144,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 	};
 
 	if (device === 'mobile') {
-		return <h1>AGENTS PAGE MOBILE</h1>;
+		return <h1>{t('agentsPageMobile')}</h1>;
 	} else {
 		return (
 			<Stack className={'agent-list-page'}>
@@ -134,7 +153,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 						<Box component={'div'} className={'left'}>
 							<input
 								type="text"
-								placeholder={'Search for an agent'}
+								placeholder={t('searchPlaceholder')}
 								value={searchText}
 								onChange={(e: any) => setSearchText(e.target.value)}
 								onKeyDown={(event: any) => {
@@ -148,23 +167,23 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 							/>
 						</Box>
 						<Box component={'div'} className={'right'}>
-							<span>Sort by</span>
+							<span>{t('sortBy')}</span>
 							<div>
 								<Button onClick={sortingClickHandler} endIcon={<KeyboardArrowDownRoundedIcon />}>
 									{filterSortName}
 								</Button>
 								<Menu anchorEl={anchorEl} open={sortingOpen} onClose={sortingCloseHandler} sx={{ paddingTop: '5px' }}>
 									<MenuItem onClick={sortingHandler} id={'recent'} disableRipple>
-										Recent
+										{t('recent')}
 									</MenuItem>
 									<MenuItem onClick={sortingHandler} id={'old'} disableRipple>
-										Oldest
+										{t('oldest')}
 									</MenuItem>
 									<MenuItem onClick={sortingHandler} id={'likes'} disableRipple>
-										Likes
+										{t('likes')}
 									</MenuItem>
 									<MenuItem onClick={sortingHandler} id={'views'} disableRipple>
-										Views
+										{t('views')}
 									</MenuItem>
 								</Menu>
 							</div>
@@ -174,7 +193,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 						{agents?.length === 0 ? (
 							<div className={'no-data'}>
 								<img src="/img/icons/icoAlert.svg" alt="" />
-								<p>No Agents found!</p>
+								<p>{t('noAgentsFound')}</p>
 							</div>
 						) : (
 							agents.map((agent: Member) => {
@@ -199,7 +218,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 
 						{agents.length !== 0 && (
 							<span>
-								Total {total} agent{total > 1 ? 's' : ''} available
+								{t('total')} {total} {total === 1 ? t('agent') : t('agents')} {t('available')}
 							</span>
 						)}
 					</Stack>

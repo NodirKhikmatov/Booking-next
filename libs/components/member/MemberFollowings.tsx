@@ -8,6 +8,7 @@ import { FollowInquiry } from '../../types/follow/follow.input';
 import { Following } from '../../types/follow/follow';
 import { GET_MEMBER_FOLLOWINGS } from '../../../apollo/user/query';
 import { REACT_APP_API_URL } from '../../config';
+import { T } from '../../types/common';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
@@ -65,7 +66,7 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>NESTAR FOLLOWS MOBILE</div>;
+		return <div>Parador FOLLOWS MOBILE</div>;
 	} else {
 		return (
 			<div id="member-follows-page">

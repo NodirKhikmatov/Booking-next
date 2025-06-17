@@ -12,20 +12,45 @@ import { NextPage } from 'next';
 import { PropertiesInquiry } from '../../libs/types/property/property.input';
 import { Property } from '../../libs/types/property/property';
 import PropertyCard from '../../libs/components/property/PropertyCard';
+import { T } from '../../libs/types/common';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
-export const getStaticProps = async ({ locale }: any) => ({
-	props: {
-		...(await serverSideTranslations(locale, ['common'])),
-	},
-});
+// Fix 1: Make sure getStaticProps is correctly exported and handles all locales
+export const getStaticProps = async ({ locale }: { locale: string }) => {
+	try {
+		return {
+			props: {
+				...(await serverSideTranslations(locale || 'en', ['common'])),
+			},
+		};
+	} catch (error) {
+		console.error('Translation loading error:', error);
+		return {
+			props: {
+				...(await serverSideTranslations('en', ['common'])),
+			},
+		};
+	}
+};
 
 const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
+
+	// Fix 2: Add fallback for translation hook
+	const { t, i18n } = useTranslation('common');
+
+	// Fix 3: Add debug logging to check if translations are loaded
+	useEffect(() => {
+		console.log('Current language:', i18n.language);
+		console.log('Translation ready:', i18n.isInitialized);
+		console.log('Sample translation test:', t('Sort by'));
+	}, [i18n.language, i18n.isInitialized, t]);
+
 	const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(
 		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
 	);
@@ -56,34 +81,38 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 
 	const likePropertyHandler = async (user: T, id: string) => {
 		try {
-			//execute likePropertyHandler Mutation
 			if (!id) return;
 			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 			await likeTargetProperty({
 				variables: { input: id },
 			});
-			//execute getPropertiesRefetch
 			await getPropertiesRefetch({ input: initialInput });
-
 			await sweetTopSmallSuccessAlert('success', 800);
 		} catch (err: any) {
 			console.log('Error:likePropertyHandler', err.message);
 			sweetMixinErrorAlert(err.message).then();
 		}
 	};
+
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (router.query.input) {
 			const inputObj = JSON.parse(router?.query?.input as string);
 			setSearchFilter(inputObj);
 		}
-
 		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
 	}, [router]);
 
 	useEffect(() => {
 		getPropertiesRefetch({ input: searchFilter }).then();
 	}, [searchFilter]);
+
+	// Fix 4: Update filterSortName when language changes
+	useEffect(() => {
+		if (i18n.isInitialized) {
+			setFilterSortName(t('New'));
+		}
+	}, [i18n.language, i18n.isInitialized, t]);
 
 	/** HANDLERS **/
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
@@ -112,19 +141,25 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		switch (e.currentTarget.id) {
 			case 'new':
 				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: Direction.ASC });
-				setFilterSortName('New');
+				setFilterSortName(t('New')); // Fix 5: Use translation here
 				break;
 			case 'lowest':
 				setSearchFilter({ ...searchFilter, sort: 'propertyPrice', direction: Direction.ASC });
-				setFilterSortName('Lowest Price');
+				setFilterSortName(t('Lowest Price')); // Fix 5: Use translation here
 				break;
 			case 'highest':
 				setSearchFilter({ ...searchFilter, sort: 'propertyPrice', direction: Direction.DESC });
-				setFilterSortName('Highest Price');
+				setFilterSortName(t('Highest Price')); // Fix 5: Use translation here
+				break;
 		}
 		setSortingOpen(false);
 		setAnchorEl(null);
 	};
+
+	// Fix 6: Add loading state while translations are loading
+	if (!i18n.isInitialized) {
+		return <div>Loading translations...</div>;
+	}
 
 	if (device === 'mobile') {
 		return <h1>PROPERTIES MOBILE</h1>;
@@ -133,7 +168,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 			<div id="property-list-page" style={{ position: 'relative' }}>
 				<div className="container">
 					<Box component={'div'} className={'right'}>
-						<span>Sort by</span>
+						<span>{t('Sort by')}</span>
 						<div>
 							<Button onClick={sortingClickHandler} endIcon={<KeyboardArrowDownRoundedIcon />}>
 								{filterSortName}
@@ -145,7 +180,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 									disableRipple
 									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
 								>
-									New
+									{t('New')}
 								</MenuItem>
 								<MenuItem
 									onClick={sortingHandler}
@@ -153,7 +188,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 									disableRipple
 									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
 								>
-									Lowest Price
+									{t('Lowest Price')}
 								</MenuItem>
 								<MenuItem
 									onClick={sortingHandler}
@@ -161,14 +196,13 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 									disableRipple
 									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
 								>
-									Highest Price
+									{t('Highest Price')}
 								</MenuItem>
 							</Menu>
 						</div>
 					</Box>
 					<Stack className={'property-page'}>
 						<Stack className={'filter-config'}>
-							{/* @ts-ignore */}
 							<Filter searchFilter={searchFilter} setSearchFilter={setSearchFilter} initialInput={initialInput} />
 						</Stack>
 						<Stack className="main-config" mb={'76px'}>
@@ -176,7 +210,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 								{properties?.length === 0 ? (
 									<div className={'no-data'}>
 										<img src="/img/icons/icoAlert.svg" alt="" />
-										<p>No Properties found!</p>
+										<p>{t('No Properties found!')}</p> {/* Fix 7: Translate this text */}
 									</div>
 								) : (
 									properties.map((property: Property) => {
@@ -202,7 +236,11 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 								{properties.length !== 0 && (
 									<Stack className="total-result">
 										<Typography>
-											Total {total} propert{total > 1 ? 'ies' : 'y'} available
+											{/* Fix 8: Translate the total results text */}
+											{t('Total {{count}} propert{{plural}} available', {
+												count: total,
+												plural: total > 1 ? 'ies' : 'y',
+											})}
 										</Typography>
 									</Stack>
 								)}
@@ -235,6 +273,3 @@ PropertyList.defaultProps = {
 };
 
 export default withLayoutBasic(PropertyList);
-function likeTargetProperty(arg0: { variables: { input: string } }) {
-	throw new Error('Function not implemented.');
-}

@@ -16,7 +16,6 @@ export interface PropertyInput {
 	propertyBreakfast?: boolean;
 	propertyFacility?: string[];
 	propertyParking?: string;
-
 	propertyBathroom: number;
 	propertyOffer: string;
 	propertyCancellation?: boolean;

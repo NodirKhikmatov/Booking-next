@@ -1,4 +1,7 @@
-import { Box, Stack } from '@mui/material';
+'use client';
+
+import { Badge, Box, Stack } from '@mui/material';
+import { Logout, WidthFull } from '@mui/icons-material';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { alpha, styled } from '@mui/material/styles';
@@ -9,10 +12,11 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import Button from '@mui/material/Button';
 import { CaretDown } from 'phosphor-react';
 import Link from 'next/link';
-import { Logout } from '@mui/icons-material';
 import MenuItem from '@mui/material/MenuItem';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { REACT_APP_API_URL } from '../config';
+import { T } from '../types/common';
+import { useCartStore } from '../cart-store';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import { useReactiveVar } from '@apollo/client';
 import { useState } from 'react';
@@ -90,6 +94,12 @@ const Top = () => {
 		setAnchorEl(null);
 	};
 
+	const CartAdd = (e: T) => {
+		router.push('/Cart');
+	};
+
+	const [cartCount, setCartCount] = useState(0);
+
 	const handleHover = (event: any) => {
 		if (anchorEl !== event.currentTarget) {
 			setAnchorEl(event.currentTarget);
@@ -97,6 +107,8 @@ const Top = () => {
 			setAnchorEl(null);
 		}
 	};
+
+	const { total, hasHydrated } = useCartStore();
 
 	const StyledMenu = styled((props: MenuProps) => (
 		<Menu
@@ -150,7 +162,7 @@ const Top = () => {
 					<div>{t('Hotels & Villas')}</div>
 				</Link>
 				<Link href={'/agent'}>
-					<div> {t('Agents')} </div>
+					<div> {t('Our Team')} </div>
 				</Link>
 				<Link href={'/community?articleCategory=FREE'}>
 					<div> {t('News')} </div>
@@ -229,7 +241,6 @@ const Top = () => {
 									</div>
 								</Link>
 							)}
-
 							<div className={'lan-box'}>
 								{user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
 								<Button
@@ -280,6 +291,11 @@ const Top = () => {
 									</MenuItem>
 								</StyledMenu>
 							</div>
+							<Button className="cartbtn" onClick={CartAdd}>
+								<Badge badgeContent={hasHydrated ? total : 0} color="error">
+									{user?.memberType == 'USER' && <img className="img-cart" src="/img/icons/cart.png" alt="" />}
+								</Badge>
+							</Button>
 						</Box>
 					</Stack>
 				</Stack>

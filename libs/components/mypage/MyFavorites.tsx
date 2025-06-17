@@ -12,12 +12,14 @@ import { Property } from '../../types/property/property';
 import PropertyCard from '../property/PropertyCard';
 import { T } from '../../types/common';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { useTranslation } from 'next-i18next';
 
 const MyFavorites: NextPage = () => {
 	const device = useDeviceDetect();
 	const [myFavorites, setMyFavorites] = useState<Property[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [searchFavorites, setSearchFavorites] = useState<T>({ page: 1, limit: 6 });
+	const { t } = useTranslation('common');
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
@@ -60,13 +62,13 @@ const MyFavorites: NextPage = () => {
 	};
 
 	if (device === 'mobile') {
-		return <div>NESTAR MY FAVORITES MOBILE</div>;
+		return <div>Parador MY FAVORITES MOBILE</div>;
 	} else {
 		return (
 			<div id="my-favorites-page">
 				<Stack className="main-title-box">
 					<Stack className="right-box">
-						<Typography className="main-title">My Favorites</Typography>
+						<Typography className="main-title">{t('My Favorites')}</Typography>
 						<Typography className="sub-title">We are glad to see you again!</Typography>
 					</Stack>
 				</Stack>

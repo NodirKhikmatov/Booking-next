@@ -302,7 +302,7 @@
 											flex-direction: row;
 											position: absolute;
 											width: auto;
-											right: 15px;
+											right: -8px;
 											margin-top: -20px;
 											justify-content: center;
 											align-items: center;
@@ -378,12 +378,23 @@
 									.price-box {
 										bottom: -43px;
 										position: relative;
+										gap: 200px;
 										.price-title {
 											font-size: 23px;
 										}
 										span {
 											color: #818181;
 											font-size: 19px;
+										}
+										Button {
+											left: 24.96rem;
+											margin-bottom: 4px;
+											background: rgb(170, 132, 83);
+											border-radius: 12px;
+											color: #ddd;
+											&:hover {
+												background: rgb(34, 34, 34);
+											}
 										}
 									}
 									.type {

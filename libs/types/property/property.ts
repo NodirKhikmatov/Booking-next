@@ -23,7 +23,7 @@ export interface Property {
 	propertySquare: number;
 	propertyBeds: number;
 	propertyRooms: number;
-	propertyFacility: string;
+	propertyFacility: string[];
 	propertyParking: string;
 	propertyBathroom: number;
 	propertyOffer: string;

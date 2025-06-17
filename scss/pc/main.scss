@@ -37,6 +37,7 @@ body {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
 	scrollbar-width: none; /* for Firefox */
 	overflow-y: scroll;
+	
 }
 
 body::-webkit-scrollbar {
@@ -44,6 +45,7 @@ body::-webkit-scrollbar {
 }
 
 #pc-wrap {
+	height: 100%;
 	#top {
 		.navbar {
 			.navbar-main {
@@ -166,11 +168,15 @@ body::-webkit-scrollbar {
 							margin-right: 8px;
 						}
 					}
+					.img-cart {
+						width: 28px;
+						height: 25px;
+					}
 				}
 			}
 		}
 	}
-
+  
 	.header-main {
 		position: relative;
 		width: 100%;

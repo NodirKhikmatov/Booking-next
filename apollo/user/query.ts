@@ -105,6 +105,7 @@ export const GET_PROPERTY = gql`
 			propertyDesc
 			propertyBreakfast
 			propertyCancellation
+			propertyFacility
 			memberId
 			soldAt
 			deletedAt
@@ -325,6 +326,7 @@ export const GET_VISITED = gql`
 				propertyImages
 				propertyDesc
 				propertyBreakfast
+				propertyBathroom
 				propertyCancellation
 				memberId
 				soldAt

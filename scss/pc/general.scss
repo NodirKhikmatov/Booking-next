@@ -116,16 +116,18 @@
 			justify-content: space-between;
 			align-items: center;
 			div {
-				width: 65px;
+				width: 85px;
 				display: flex;
 				flex-direction: row;
 				align-items: center;
+				gap: 4px;
 				justify-content: space-between;
 			}
 			p {
-				color: #181a20;
 				font-family: $font;
-				font-size: 13px;
+				font-size: 15px;
+				color: rgb(12, 188, 135);
+
 				font-style: normal;
 				font-weight: 500;
 				line-height: normal;
@@ -133,7 +135,8 @@
 			}
 			span {
 				margin-left: 6px;
-				color: rgba(143, 143, 143, 0.54);
+				color: rgb(214, 41, 62);
+
 				font-family: $font;
 				font-size: 15px;
 				font-style: normal;

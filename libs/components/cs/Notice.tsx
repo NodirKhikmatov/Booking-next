@@ -1,15 +1,19 @@
+import { Box, Stack } from '@mui/material';
+
 import React from 'react';
-import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+
+type NoticeItem = {
+	no: number;
+	title: string;
+	date: string;
+	event?: boolean;
+};
 
 const Notice = () => {
 	const device = useDeviceDetect();
 
-	/** APOLLO REQUESTS **/
-	/** LIFECYCLES **/
-	/** HANDLERS **/
-
-	const data = [
+	const data: NoticeItem[] = [
 		{
 			no: 1,
 			event: true,
@@ -24,30 +28,41 @@ const Notice = () => {
 	];
 
 	if (device === 'mobile') {
-		return <div>NOTICE MOBILE</div>;
-	} else {
 		return (
-			<Stack className={'notice-content'}>
-				<span className={'title'}>Notice</span>
-				<Stack className={'main'}>
-					<Box component={'div'} className={'top'}>
-						<span>number</span>
-						<span>title</span>
-						<span>date</span>
+			<Stack className="notice-content mobile">
+				<span className="title">Notice</span>
+				{data.map((ele) => (
+					<Box key={ele.title} className={`notice-card ${ele.event ? 'event' : ''}`}>
+						{ele.event ? <div>event</div> : <span className="notice-number">{ele.no}</span>}
+						<span className="notice-title">{ele.title}</span>
+						<span className="notice-date">{ele.date}</span>
 					</Box>
-					<Stack className={'bottom'}>
-						{data.map((ele: any) => (
-							<div className={`notice-card ${ele?.event && 'event'}`} key={ele.title}>
-								{ele?.event ? <div>event</div> : <span className={'notice-number'}>{ele.no}</span>}
-								<span className={'notice-title'}>{ele.title}</span>
-								<span className={'notice-date'}>{ele.date}</span>
-							</div>
-						))}
-					</Stack>
-				</Stack>
+				))}
 			</Stack>
 		);
 	}
+
+	return (
+		<Stack className="notice-content">
+			<span className="title">Notice</span>
+			<Stack className="main">
+				<Box className="top">
+					<span>number</span>
+					<span>title</span>
+					<span>date</span>
+				</Box>
+				<Stack className="bottom">
+					{data.map((ele) => (
+						<div className={`notice-card ${ele.event ? 'event' : ''}`} key={ele.title}>
+							{ele.event ? <div>event</div> : <span className="notice-number">{ele.no}</span>}
+							<span className="notice-title">{ele.title}</span>
+							<span className="notice-date">{ele.date}</span>
+						</div>
+					))}
+				</Stack>
+			</Stack>
+		</Stack>
+	);
 };
 
 export default Notice;

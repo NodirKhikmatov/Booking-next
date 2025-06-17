@@ -7,10 +7,12 @@ import { AgentsInquiry } from '../../types/member/member.input';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { GET_AGENTS } from '../../../apollo/user/query';
 import { Member } from '../../types/member/member';
+import { T } from '../../types/common';
 import TopAgentCard from './TopAgentCard';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 interface TopAgentsProps {
 	initialInput: AgentsInquiry;
@@ -21,6 +23,7 @@ const TopAgents = (props: TopAgentsProps) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [topAgents, setTopAgents] = useState<Member[]>([]);
+	const { t } = useTranslation('common');
 
 	/** APOLLO REQUESTS **/
 	const {
@@ -73,11 +76,11 @@ const TopAgents = (props: TopAgentsProps) => {
 						<Box component={'div'} className={'left'}>
 							<span className="section-title">
 								<img src="icons/before.png" alt="" width="24" height="24" />
-								PARADOR TEAM
+								{t('PARADOR TEAM')}
 								<img src="icons/before.png" alt="" width="24" height="24" />
 							</span>
 							<p>
-								<span>Expert Team Persons</span>
+								<span>{t('Expert Team Persons')}</span>
 							</p>
 						</Box>
 					</Stack>
@@ -111,20 +114,20 @@ const TopAgents = (props: TopAgentsProps) => {
 					</Stack>
 					<div className="stats-box">
 						<div className="stat-item">
-							<span className="label">Projects</span>
+							<span className="label">{t('Projects')}</span>
 							<span className="number">20</span>
 						</div>
 
 						<div className="stat-item">
-							<span className="label">People</span>
+							<span className="label">{t('People')}</span>
 							<span className="number">35</span>
 						</div>
 						<div className="stat-item">
-							<span className="label">Years</span>
+							<span className="label">{t('Years')}</span>
 							<span className="number">40</span>
 						</div>
 						<div className="stat-item">
-							<span className="label">Award Winner</span>
+							<span className="label">{t('Award Winner')}</span>
 							<span className="number">30</span>
 						</div>
 					</div>

@@ -9,9 +9,11 @@ import Link from 'next/link';
 import PopularPropertyCard from './PopularPropertyCard';
 import { PropertiesInquiry } from '../../types/property/property.input';
 import { Property } from '../../types/property/property';
+import { T } from '../../types/common';
 import WestIcon from '@mui/icons-material/West';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useQuery } from '@apollo/client';
+import { useTranslation } from 'next-i18next';
 
 interface PopularPropertiesProps {
 	initialInput: PropertiesInquiry;
@@ -21,6 +23,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
 	const [popularProperties, setPopularProperties] = useState<Property[]>([]);
+	const { t } = useTranslation('common');
 
 	/** APOLLO REQUESTS **/
 	const {
@@ -45,7 +48,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 			<Stack className={'popular-properties'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<span> CUSTOMER SERVICES</span>
+						<span>{t('CUSTOMER SERVICES')}</span>
 					</Stack>
 					<Stack className={'card-box'}>
 						<Swiper
@@ -75,18 +78,18 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 						<Box component={'div'} className={'left'}>
 							<span className="section-title">
 								<img src="icons/before.png" alt="" width="24" height="24" />
-								CUSTOMER SERVICES
+								{t('CUSTOMER SERVICES')}
 							</span>
 							<p>
-								<span>Book your stay and relaxin</span>
+								<span>{t('Book your stay and relax in')}</span>
 								<br /> <br />
-								<span>luxury hotel</span>
+								<span>{t('luxury hotel')}</span>
 							</p>
 						</Box>
 
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'}>
-								{/* <Link href={'/property'}><span>See All Categories</span></Link> */}
+								{/* <Link href={'/property'}><span>{t('See All Categories')}</span></Link> */}
 								{/* <img src="/img/icons/rightup.svg" alt="" /> */}
 							</div>
 						</Box>

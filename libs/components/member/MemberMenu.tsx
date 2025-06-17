@@ -5,6 +5,7 @@ import { GET_MEMBER } from '../../../apollo/user/query';
 import Link from 'next/link';
 import { Member } from '../../types/member/member';
 import { REACT_APP_API_URL } from '../../config';
+import { T } from '../../types/common';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';

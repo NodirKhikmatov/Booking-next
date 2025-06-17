@@ -7,45 +7,47 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import moment from 'moment';
 import useDeviceDetect from '../hooks/useDeviceDetect';
+import { useTranslation } from 'next-i18next';
 
 const Footer = () => {
 	const device = useDeviceDetect();
 	const currentYear = moment().year();
+	const { t } = useTranslation('common');
 
 	const PropertyLinks = () => (
 		<div>
-			<strong>Find Properties</strong>
-			<Link href="/properties/villa">Villas</Link>
-			<Link href="/properties/penthouse">Penthouses</Link>
-			<Link href="/properties/serviced">Serviced Apartments</Link>
-			<Link href="/properties/short-term">Short-term Rentals</Link>
+			<strong>{t('Find Properties')}</strong>
+			<Link href="/properties/villa">{t('Villas')}</Link>
+			<Link href="/properties/penthouse">{t('Penthouses')}</Link>
+			<Link href="/properties/serviced">{t('Serviced Apartments')}</Link>
+			<Link href="/properties/short-term">{t('Short-term Rentals')}</Link>
 		</div>
 	);
 
 	const QuickLinks = () => (
 		<div>
-			<strong>Quick Links</strong>
-			<Link href="/terms">Terms of Use</Link>
-			<Link href="/privacy">Privacy Policy</Link>
-			<Link href="/pricing">Pricing Plans</Link>
-			<Link href="/services">Our Services</Link>
-			<Link href="/support">Contact Support</Link>
-			<Link href="/faq">FAQs</Link>
+			<strong>{t('Quick Links')}</strong>
+			<Link href="/terms">{t('Terms of Use')}</Link>
+			<Link href="/privacy">{t('Privacy Policy')}</Link>
+			<Link href="/pricing">{t('Pricing Plans')}</Link>
+			<Link href="/services">{t('Our Services')}</Link>
+			<Link href="/support">{t('Contact Support')}</Link>
+			<Link href="/faq">{t('FAQs')}</Link>
 		</div>
 	);
 
 	const DiscoverLinks = () => (
 		<div>
-			<strong>Discover</strong>
-			<Link href="/location/seoul">Seoul</Link>
-			<Link href="/location/gyeongido">Gyeongido</Link>
-			<Link href="/location/busan">Busan</Link>
-			<Link href="/location/jejudo">Jejudo</Link>
+			<strong>{t('Discover')}</strong>
+			<Link href="/location/seoul">{t('Seoul')}</Link>
+			<Link href="/location/gyeongido">{t('Gyeongido')}</Link>
+			<Link href="/location/busan">{t('Busan')}</Link>
+			<Link href="/location/jejudo">{t('Jejudo')}</Link>
 		</div>
 	);
 
 	const SocialIcons = () => (
-		<div className={styles['media-box']}>
+		<div className={'media-box'}>
 			<FacebookOutlinedIcon />
 			<TelegramIcon />
 			<InstagramIcon />
@@ -62,7 +64,7 @@ const Footer = () => {
 							<img src="/img/logo/booking.webp" alt="" className={'logo'} />
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
-							<span>total free customer care</span>
+							<span>{t('total free customer care')}</span>
 							<p>+82 10 2461 9944</p>
 						</Box>
 						<a
@@ -72,16 +74,16 @@ const Footer = () => {
 							style={{ textDecoration: 'none', color: 'inherit' }}
 						>
 							<Box component={'div'} className={'footer-box'}>
-								<span>JEONJU</span>
+								<span>{t('JEONJU')}</span>
 								<p>
-									Girin-daero, Wansan-gu, Jeonju-si,
+									{t('Girin-daero, Wansan-gu, Jeonju-si,')}
 									<br />
-									Jeonbuk State
+									{t('Jeonbuk State')}
 								</p>
 							</Box>
 						</a>
 						<Box component={'div'} className={'footer-box'}>
-							<p>follow us on social media</p>
+							<p>{t('follow us on social media')}</p>
 							<div className={'media-box'}>
 								<a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
 									<FacebookOutlinedIcon />
@@ -101,32 +103,34 @@ const Footer = () => {
 					<Stack className={'right'}>
 						<Box component={'div'} className={'bottom'}>
 							<div>
-								<strong>Company</strong>
-								<Link href="/properties/hotel">Hotels</Link>
+								<strong>{t('Company')}</strong>
+								<Link href="/properties/hotel">{t('Hotels')}</Link>
 
-								<span>Property Low to hide</span>
+								<span>{t('Property Low to hide')}</span>
 							</div>
 							<div>
-								<strong>Quick Links</strong>
-								<span>Terms of Use</span>
-								<span>Privacy Policy</span>
-								<span>Pricing Plans</span>
-								<span>Our Services</span>
-								<span>Contact Support</span>
-								<span>FAQs</span>
+								<strong>{t('Quick Links')}</strong>
+								<span>{t('Terms of Use')}</span>
+								<span>{t('Privacy Policy')}</span>
+								<span>{t('Pricing Plans')}</span>
+								<span>{t('Our Services')}</span>
+								<span>{t('Contact Support')}</span>
+								<span>{t('FAQs')}</span>
 							</div>
 							<div>
-								<strong>Discover</strong>
-								<span>Seoul</span>
-								<span>Gyeongido</span>
-								<span>Busan</span>
-								<span>Jejudo</span>
+								<strong>{t('Discover')}</strong>
+								<span>{t('Seoul')}</span>
+								<span>{t('Gyeongido')}</span>
+								<span>{t('Busan')}</span>
+								<span>{t('Jejudo')}</span>
 							</div>
 						</Box>
 					</Stack>
 				</Stack>
 				<Stack className={'second'}>
-					<span>© Parador - All rights reserved. Parador {moment().year()}</span>
+					<span>
+						{t('© Parador - All rights reserved. Parador')} {moment().year()}
+					</span>
 				</Stack>
 			</Stack>
 		);
@@ -139,7 +143,7 @@ const Footer = () => {
 							<img src="/img/logo/booking.webp" alt="" className={'logo'} />
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
-							<span>total free customer care</span>
+							<span>{t('total free customer care')}</span>
 							<p>+82 10 2461 9944</p>
 						</Box>
 						<a
@@ -149,16 +153,16 @@ const Footer = () => {
 							style={{ textDecoration: 'none', color: 'inherit' }}
 						>
 							<Box component={'div'} className={'footer-box'}>
-								<span>JEONJU</span>
+								<span>{t('JEONJU')}</span>
 								<p>
-									Girin-daero, Wansan-gu, Jeonju-si,
+									{t('Girin-daero, Wansan-gu, Jeonju-si,')}
 									<br />
-									Jeonbuk State
+									{t('Jeonbuk State')}
 								</p>
 							</Box>
 						</a>
 						<Box component={'div'} className={'footer-box'}>
-							<p>follow us on social media</p>
+							<p>{t('follow us on social media')}</p>
 							<div className={'media-box'}>
 								<a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
 									<FacebookOutlinedIcon />
@@ -177,63 +181,65 @@ const Footer = () => {
 					</Stack>
 					<Stack className={'right'}>
 						<Box component={'div'} className={'top'}>
-							<strong>keep yourself up to date</strong>
+							<strong>{t('keep yourself up to date')}</strong>
 							<div>
-								<input type="text" placeholder={'Your Email'} />
-								<span>Subscribe</span>
+								<input type="text" placeholder={t('Your Email')} />
+								<span>{t('Subscribe')}</span>
 							</div>
 						</Box>
 						<Box component={'div'} className={'bottom'}>
 							<div>
-								<strong className="company">Company</strong>
+								<strong className="company">{t('Company')}</strong>
 
 								<Link href="/" className="span">
-									Home
+									{t('Home')}
 								</Link>
 
 								<Link href="/property" className="span">
-									Hotel&Villas
+									{t('Hotels & Villas')}
 								</Link>
 								<Link href="/community" className="span">
-									News
+									{t('News')}
 								</Link>
 								<Link href="/mypage" className="span">
-									MyPage
+									{t('My Page')}
 								</Link>
 							</div>
 							<div>
-								<strong>Quick Links</strong>
+								<strong>{t('Quick Links')}</strong>
 								<Link href="/account/join" className="span">
-									Login/Signup
+									{t('Login/Signup')}
 								</Link>
 								<Link href="/property?input" className="span">
-									Find Your Luxery place
+									{t('Find Your Luxery place')}
 								</Link>
 								<Link href="/cs?tab=faq" className="span">
-									Privacy Policy
+									{t('Privacy Policy')}
 								</Link>
 								<Link href="/agent/detail" className="span">
-									Contact Support
+									{t('Contact Support')}
 								</Link>
 							</div>
 							<div>
-								<strong>Discover</strong>
+								<strong>{t('Discover')}</strong>
 								<Link href="/community" className="span">
-									Thailand
+									{t('Thailand')}
 								</Link>
 								<Link href="/community" className="span">
-									Malasia
+									{t('Malasia')}
 								</Link>
 								<Link href="/community" className="span">
-									Bali
+									{t('Bali')}
 								</Link>
 							</div>
 						</Box>
 					</Stack>
 				</Stack>
 				<Stack className={'second'}>
-					<span>© Parador - All rights reserved. Parador {moment().year()}</span>
-					<span>Privacy · Terms · Sitemap</span>
+					<span>
+						{t('© Parador - All rights reserved. Parador')} {moment().year()}
+					</span>
+					<span>{t('Privacy · Terms · Sitemap')}</span>
 				</Stack>
 			</Stack>
 		);

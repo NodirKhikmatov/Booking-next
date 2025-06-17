@@ -105,6 +105,25 @@
 									position: relative;
 									vertical-align: baseline;
 								}
+								.optionss {
+									display: flex;
+									flex-direction: row;
+									align-items: center;
+									gap: 4px;
+
+									img {
+										width: 17px;
+										height: 17px;
+										margin-right: 2px;
+
+										filter: brightness(0) saturate(100%) invert(43%) sepia(33%) saturate(479%) hue-rotate(7deg)
+											brightness(95%) contrast(86%);
+									}
+
+									span {
+										color: inherit;
+									}
+								}
 							}
 						}
 					}

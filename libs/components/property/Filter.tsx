@@ -20,6 +20,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { propertySquare } from '../../config';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 const MenuProps = {
 	PaperProps: {
@@ -43,6 +44,7 @@ const Filter = (props: FilterType) => {
 	const [propertyType, setPropertyType] = useState<PropertyType[]>(Object.values(PropertyType));
 	const [searchText, setSearchText] = useState<string>('');
 	const [showMore, setShowMore] = useState<boolean>(false);
+	const { t } = useTranslation('common');
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -344,6 +346,8 @@ const Filter = (props: FilterType) => {
 				const isChecked = e.target.checked;
 				const value = e.target.value;
 				if (isChecked) {
+					console.log(isChecked, 'ischecked');
+
 					await router.push(
 						`/property?input=${JSON.stringify({
 							...searchFilter,
@@ -356,6 +360,8 @@ const Filter = (props: FilterType) => {
 						{ scroll: false },
 					);
 				} else if (searchFilter?.search?.options?.includes(value)) {
+					console.log(isChecked, 'ischecked-1');
+
 					await router.push(
 						`/property?input=${JSON.stringify({
 							...searchFilter,
@@ -373,6 +379,17 @@ const Filter = (props: FilterType) => {
 						})}`,
 						{ scroll: false },
 					);
+
+					console.log(
+						JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								options: searchFilter?.search?.options?.filter((item: string) => item !== value),
+							},
+						}),
+						'tet',
+					);
 				}
 
 				console.log('propertyOptionSelectHandler:', e.target.value);
@@ -382,6 +399,8 @@ const Filter = (props: FilterType) => {
 		},
 		[searchFilter],
 	);
+
+	console.log(searchFilter, 'filter');
 
 	const propertyBedSelectHandler = useCallback(
 		async (number: Number) => {
@@ -445,69 +464,6 @@ const Filter = (props: FilterType) => {
 		},
 		[searchFilter],
 	);
-
-	// const propertyBathSelectHandler = useCallback(
-	// 	async (number: Number) => {
-	// 		try {
-	// 			if (number != 0) {
-	// 				if (searchFilter?.search?.bathList?.includes(number)) {
-	// 					await router.push(
-	// 						`/property?input=${JSON.stringify({
-	// 							...searchFilter,
-	// 							search: {
-	// 								...searchFilter.search,
-	// 								bathList: searchFilter?.search?.bathList?.filter((item: Number) => item !== number),
-	// 							},
-	// 						})}`,
-	// 						`/property?input=${JSON.stringify({
-	// 							...searchFilter,
-	// 							search: {
-	// 								...searchFilter.search,
-	// 								bathList: searchFilter?.search?.bathList?.filter((item: Number) => item !== number),
-	// 							},
-	// 						})}`,
-	// 						{ scroll: false },
-	// 					);
-	// 				} else {
-	// 					await router.push(
-	// 						`/property?input=${JSON.stringify({
-	// 							...searchFilter,
-	// 							search: { ...searchFilter.search, bathList: [...(searchFilter?.search?.bedsList || []), number] },
-	// 						})}`,
-	// 						`/property?input=${JSON.stringify({
-	// 							...searchFilter,
-	// 							search: { ...searchFilter.search, bathList: [...(searchFilter?.search?.bedsList || []), number] },
-	// 						})}`,
-	// 						{ scroll: false },
-	// 					);
-	// 				}
-	// 			} else {
-	// 				delete searchFilter?.search.bathList;
-	// 				setSearchFilter({ ...searchFilter });
-	// 				await router.push(
-	// 					`/property?input=${JSON.stringify({
-	// 						...searchFilter,
-	// 						search: {
-	// 							...searchFilter.search,
-	// 						},
-	// 					})}`,
-	// 					`/property?input=${JSON.stringify({
-	// 						...searchFilter,
-	// 						search: {
-	// 							...searchFilter.search,
-	// 						},
-	// 					})}`,
-	// 					{ scroll: false },
-	// 				);
-	// 			}
-
-	// 			console.log('propertyBedSelectHandler:', number);
-	// 		} catch (err: any) {
-	// 			console.log('ERROR, propertyBedSelectHandler:', err);
-	// 		}
-	// 	},
-	// 	[searchFilter],
-	// );
 
 	const propertySquareHandler = useCallback(
 		async (e: any, type: string) => {
@@ -611,18 +567,18 @@ const Filter = (props: FilterType) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>PROPERTIES FILTER</div>;
+		return <div>{t('propertiesFilter')}</div>;
 	} else {
 		return (
 			<Stack className={'filter-main'}>
 				<Stack className={'find-your-home'} mb={'40px'}>
-					<Typography className={'title-main'}>Find Your Luxery place </Typography>
+					<Typography className={'title-main'}>{t('findYourLuxuryPlace')}</Typography>
 					<Stack className={'input-box'}>
 						<OutlinedInput
 							value={searchText}
 							type={'text'}
 							className={'search-input'}
-							placeholder={'What are you looking for?'}
+							placeholder={t('whatAreYouLookingFor')}
 							onChange={(e: any) => setSearchText(e.target.value)}
 							onKeyDown={(event: any) => {
 								if (event.key == 'Enter') {
@@ -647,7 +603,7 @@ const Filter = (props: FilterType) => {
 							}
 						/>
 						<img src={'/img/icons/search_icon.png'} alt={''} />
-						<Tooltip title="Reset">
+						<Tooltip title={t('reset')}>
 							<IconButton onClick={refreshHandler}>
 								<RefreshIcon />
 							</IconButton>
@@ -656,7 +612,7 @@ const Filter = (props: FilterType) => {
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
 					<p className={'title'} style={{ textShadow: '0px 3px 4px #b9b9b9' }}>
-						Location
+						{t('location')}
 					</p>
 					<Stack
 						className={`property-location`}
@@ -681,7 +637,7 @@ const Filter = (props: FilterType) => {
 										onChange={propertyLocationSelectHandler}
 									/>
 									<label htmlFor={location} style={{ cursor: 'pointer' }}>
-										<Typography className="property-type">{location}</Typography>
+										<Typography className="property-type">{t(`locations.${location}`)}</Typography>
 									</label>
 								</Stack>
 							);
@@ -689,7 +645,7 @@ const Filter = (props: FilterType) => {
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Property Type</Typography>
+					<Typography className={'title'}>{t('propertyType')}</Typography>
 					{propertyType.map((type: string) => (
 						<Stack className={'input-box'} key={type}>
 							<Checkbox
@@ -702,13 +658,13 @@ const Filter = (props: FilterType) => {
 								checked={(searchFilter?.search?.typeList || []).includes(type as PropertyType)}
 							/>
 							<label style={{ cursor: 'pointer' }}>
-								<Typography className="property_type">{type}</Typography>
+								<Typography className="property_type">{t(`propertyTypes.${type}`)}</Typography>
 							</label>
 						</Stack>
 					))}
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Rooms</Typography>
+					<Typography className={'title'}>{t('rooms')}</Typography>
 					<Stack className="button-group">
 						<Button
 							sx={{
@@ -717,7 +673,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => propertyRoomSelectHandler(0)}
 						>
-							Any
+							{t('any')}
 						</Button>
 						<Button
 							sx={{
@@ -752,7 +708,7 @@ const Filter = (props: FilterType) => {
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Bedrooms</Typography>
+					<Typography className={'title'}>{t('bedrooms')}</Typography>
 					<Stack className="button-group">
 						<Button
 							sx={{
@@ -761,7 +717,7 @@ const Filter = (props: FilterType) => {
 							}}
 							onClick={() => propertyBedSelectHandler(0)}
 						>
-							Any
+							{t('any')}
 						</Button>
 						<Button
 							sx={{
@@ -795,54 +751,9 @@ const Filter = (props: FilterType) => {
 							3+
 						</Button>
 					</Stack>
-					{/* <Stack className={'find-your-home'} mb={'30px'}>
-						<Typography className={'title'}>Bathrooms</Typography>
-						<Stack className="button-group">
-							<Button
-								sx={{
-									borderRadius: '12px 0 0 12px',
-									border: !searchFilter?.search?.bathList ? '2px solid #181A20' : '1px solid #b9b9b9',
-								}}
-								onClick={() => propertyBathSelectHandler(0)}
-							>
-								Any
-							</Button>
-							<Button
-								sx={{
-									borderRadius: 0,
-									border: searchFilter?.search?.bathList?.includes(1) ? '2px solid #181A20' : '1px solid #b9b9b9',
-									borderLeft: searchFilter?.search?.bathList?.includes(1) ? undefined : 'none',
-								}}
-								onClick={() => propertyBathSelectHandler(1)}
-							>
-								1
-							</Button>
-							<Button
-								sx={{
-									borderRadius: 0,
-									border: searchFilter?.search?.bathList?.includes(2) ? '2px solid #181A20' : '1px solid #b9b9b9',
-									borderLeft: searchFilter?.search?.bathList?.includes(2) ? undefined : 'none',
-								}}
-								onClick={() => propertyBathSelectHandler(2)}
-							>
-								2
-							</Button>
-
-							<Button
-								sx={{
-									borderRadius: '0 12px 12px 0',
-									border: searchFilter?.search?.bathList?.includes(5) ? '2px solid #181A20' : '1px solid #b9b9b9',
-									borderLeft: searchFilter?.search?.bathList?.includes(5) ? undefined : 'none',
-								}}
-								onClick={() => propertyBathSelectHandler(5)}
-							>
-								3+
-							</Button>
-						</Stack>
-					</Stack> */}
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Options</Typography>
+					<Typography className={'title'}>{t('options')}</Typography>
 					<Stack className={'input-box'}>
 						<Checkbox
 							id={'Breakfast'}
@@ -854,7 +765,7 @@ const Filter = (props: FilterType) => {
 							onChange={propertyOptionSelectHandler}
 						/>
 						<label htmlFor={'Breakfast'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Free Breakfast </Typography>
+							<Typography className="propert-type">{t('freeBreakfast')}</Typography>
 						</label>
 					</Stack>
 					<Stack className={'input-box'}>
@@ -868,20 +779,20 @@ const Filter = (props: FilterType) => {
 							onChange={propertyOptionSelectHandler}
 						/>
 						<label htmlFor={'Cancellation'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Free Cancellation </Typography>
+							<Typography className="propert-type">{t('freeCancellation')}</Typography>
 						</label>
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Square meter</Typography>
+					<Typography className={'title'}>{t('squareMeter')}</Typography>
 					<Stack className="square-year-input">
 						<FormControl>
-							<InputLabel id="demo-simple-select-label">Min</InputLabel>
+							<InputLabel id="demo-simple-select-label">{t('min')}</InputLabel>
 							<Select
 								labelId="demo-simple-select-label"
 								id="demo-simple-select"
 								value={searchFilter?.search?.squaresRange?.start ?? 0}
-								label="Min"
+								label={t('min')}
 								onChange={(e: any) => propertySquareHandler(e, 'start')}
 								MenuProps={MenuProps}
 							>
@@ -898,12 +809,12 @@ const Filter = (props: FilterType) => {
 						</FormControl>
 						<div className="central-divider"></div>
 						<FormControl>
-							<InputLabel id="demo-simple-select-label">Max</InputLabel>
+							<InputLabel id="demo-simple-select-label">{t('max')}</InputLabel>
 							<Select
 								labelId="demo-simple-select-label"
 								id="demo-simple-select"
 								value={searchFilter?.search?.squaresRange?.end ?? 500}
-								label="Max"
+								label={t('max')}
 								onChange={(e: any) => propertySquareHandler(e, 'end')}
 								MenuProps={MenuProps}
 							>
@@ -921,11 +832,11 @@ const Filter = (props: FilterType) => {
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'}>
-					<Typography className={'title'}>Price Range</Typography>
+					<Typography className={'title'}>{t('priceRange')}</Typography>
 					<Stack className="square-year-input">
 						<input
 							type="number"
-							placeholder="$ min"
+							placeholder={t('minPrice')}
 							min={0}
 							value={searchFilter?.search?.pricesRange?.start ?? 0}
 							onChange={(e: any) => {
@@ -937,7 +848,7 @@ const Filter = (props: FilterType) => {
 						<div className="central-divider"></div>
 						<input
 							type="number"
-							placeholder="$ max"
+							placeholder={t('maxPrice')}
 							value={searchFilter?.search?.pricesRange?.end ?? 0}
 							onChange={(e: any) => {
 								if (e.target.value >= 0) {
