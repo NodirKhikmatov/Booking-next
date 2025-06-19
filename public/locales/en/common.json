@@ -188,6 +188,141 @@
 		"writeArticle": "Write Article",
 		"myProfile": "My Profile",
 		"followers": "Followers",
-		"followings": "Followings"
+		"followings": "Followings",
+
+		"payment": "Payment",
+		"booking": "Booking",
+		"guest": "Guest",
+		"buyers": "For Buyers",
+		"membership": "Membership",
+		"community": "Community",
+		"other": "Other"
+	},
+
+	"Cs center": "CS center",
+	"cs_subtitle": "I will answer your questions",
+	"Notice": "Notice",
+	"FAQ": "FAQ",
+	"cs_page_mobile": "CS PAGE MOBILE",
+	"notice": "Notice",
+	"event": "Event",
+	"number": "Number",
+	"title": "Title",
+	"date": "Date",
+	"register_discount": "Register to use and get discounts",
+	"free_booking_webapp": "It's absolutely free booking webapp",
+
+	"faq": {
+		"booking": [
+			{
+				"id": "001",
+				"subject": "How do I book a villa or penthouse?",
+				"content": "Simply select your desired property, choose dates, and complete the booking form. Our agents will follow up to confirm."
+			},
+			{
+				"id": "002",
+				"subject": "Can I make a last-minute booking?",
+				"content": "Yes, subject to availability. We recommend contacting our team directly for urgent bookings."
+			},
+			{
+				"id": "003",
+				"subject": "Is there a minimum stay requirement?",
+				"content": "Yes, most villas and penthouses have a minimum stay of 2–3 nights. Specifics vary by property."
+			},
+			{
+				"id": "004",
+				"subject": "What is the cancellation policy?",
+				"content": "Cancellations made 14 days prior are fully refundable. Please check individual listing policies for exceptions."
+			},
+			{
+				"id": "005",
+				"subject": "Can I modify my reservation after booking?",
+				"content": "Yes, changes can be made depending on availability. Contact support for assistance."
+			}
+		],
+
+		"payment": [
+			{
+				"id": "006",
+				"subject": "What payment methods do you accept?",
+				"content": "We accept credit/debit cards, bank transfers, and some mobile payment options."
+			},
+			{
+				"id": "007",
+				"subject": "Do I need to pay a deposit?",
+				"content": "Yes, a 30–50% deposit is usually required to confirm your booking."
+			},
+			{
+				"id": "008",
+				"subject": "Is the payment secure?",
+				"content": "Absolutely. Our platform uses encryption and secure payment gateways to protect your information."
+			},
+			{
+				"id": "009",
+				"subject": "When is the remaining balance due?",
+				"content": "The remaining balance is typically due 7 days before check-in."
+			}
+		],
+		"property": [
+			{
+				"id": "010",
+				"subject": "Are the villas and penthouses private?",
+				"content": "Yes, all listings are exclusive and private unless stated otherwise."
+			},
+			{
+				"id": "011",
+				"subject": "What amenities are included?",
+				"content": "Common amenities include pools, private chefs, housekeeping, and Wi-Fi. Check each listing for full details."
+			},
+			{
+				"id": "012",
+				"subject": "Can I request additional services?",
+				"content": "Yes, we offer add-ons like airport transfers, private chefs, and spa treatments upon request."
+			},
+			{
+				"id": "013",
+				"subject": "Are pets allowed?",
+				"content": "Some properties are pet-friendly. Please use the filters or ask our team for options."
+			}
+		],
+		"guest": [
+			{
+				"id": "014",
+				"subject": "Is the property child-friendly?",
+				"content": "Yes, many of our listings are suitable for families. Look for child-friendly tags on listings."
+			},
+			{
+				"id": "015",
+				"subject": "How do I check in?",
+				"content": "Check-in instructions will be emailed to you after booking. Most properties offer contactless check-in."
+			},
+			{
+				"id": "016",
+				"subject": "What should I do if I have an issue during my stay?",
+				"content": "Contact our 24/7 guest support line. We're here to help you immediately."
+			},
+			{
+				"id": "017",
+				"subject": "Can I host events or parties?",
+				"content": "Some properties allow private events. Prior approval is required and additional fees may apply."
+			}
+		],
+		"other": [
+			{
+				"id": "018",
+				"subject": "Do you offer loyalty rewards or membership?",
+				"content": "We're working on a loyalty program. Stay tuned!"
+			},
+			{
+				"id": "019",
+				"subject": "Can I list my own villa or penthouse?",
+				"content": "Yes, property owners can contact us to discuss listing terms and conditions."
+			},
+			{
+				"id": "020",
+				"subject": "Do you offer group or corporate booking options?",
+				"content": "Yes, we handle large group bookings and corporate retreats. Contact us for tailored packages."
+			}
+		]
 	}
 }

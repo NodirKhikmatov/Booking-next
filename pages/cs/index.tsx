@@ -1,12 +1,14 @@
-import React from 'react';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { Box, Stack } from '@mui/material';
-import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import Notice from '../../libs/components/cs/Notice';
+
 import Faq from '../../libs/components/cs/Faq';
+import { NextPage } from 'next';
+import Notice from '../../libs/components/cs/Notice';
+import React from 'react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -17,6 +19,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 const CS: NextPage = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
+	const { t } = useTranslation('common');
 
 	/** HANDLERS **/
 	const changeTabHandler = (tab: string) => {
@@ -39,8 +42,8 @@ const CS: NextPage = () => {
 				<Stack className={'container'}>
 					<Box component={'div'} className={'cs-main-info'}>
 						<Box component={'div'} className={'info'}>
-							<span>Cs center</span>
-							<p>I will answer your questions</p>
+							<span>{t('Cs center')}</span>
+							<p>{t('cs_subtitle')}</p>
 						</Box>
 						<Box component={'div'} className={'btns'}>
 							<div
@@ -49,7 +52,7 @@ const CS: NextPage = () => {
 									changeTabHandler('notice');
 								}}
 							>
-								Notice
+								{t('Notice')}
 							</div>
 							<div
 								className={tab == 'faq' ? 'active' : ''}
@@ -57,7 +60,7 @@ const CS: NextPage = () => {
 									changeTabHandler('faq');
 								}}
 							>
-								FAQ
+								{t('FAQ')}
 							</div>
 						</Box>
 					</Box>

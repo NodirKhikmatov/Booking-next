@@ -187,11 +187,7 @@ const PropertyCard = (props: PropertyCardType) => {
 							<Typography className={'price-title'}>
 								${formatterStr(property?.propertyPrice)}
 								<span>{t('property.per_day')}</span>
-								{user?.memberType == 'USER' && (
-									<Button onClick={addToCart} variant="continued">
-										{t('property.add_to_cart')}
-									</Button>
-								)}
+								{user?.memberType == 'USER' && <Button onClick={addToCart}>{t('property.add_to_cart')}</Button>}
 							</Typography>
 						</Box>
 					</Stack>
