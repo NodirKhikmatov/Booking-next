@@ -10,3 +10,4 @@ RUN yarn build
 EXPOSE 3000
 
 CMD ["yarn", "start", "-H", "0.0.0.0"]
+
