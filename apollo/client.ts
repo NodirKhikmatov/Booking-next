@@ -61,14 +61,25 @@ class LoggingWebSocket {
 
 function createIsomorphicLink() {
 	if (typeof window !== 'undefined') {
+		// const authLink = new ApolloLink((operation, forward) => {
+		// 	operation.setContext(({ headers = {} }) => ({
+		// 		headers: {
+		// 			...headers,
+		// 			...getHeaders(),
+		// 		},
+		// 	}));
+		// 	console.warn('requesting.. ', operation);
+		// 	return forward(operation);
+		// });
+
 		const authLink = new ApolloLink((operation, forward) => {
 			operation.setContext(({ headers = {} }) => ({
 				headers: {
 					...headers,
 					...getHeaders(),
+					'x-apollo-operation-name': operation.operationName || 'Unknown', // <-- Add this line
 				},
 			}));
-			console.warn('requesting.. ', operation);
 			return forward(operation);
 		});
 
