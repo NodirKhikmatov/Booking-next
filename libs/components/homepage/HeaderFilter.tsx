@@ -364,7 +364,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 						{propertyType.map((type: string) => {
 							return (
 								<div
-									style={{ backgroundImage: `url(/img/banner/types/${type.toLowerCase()}.avif)` }}
+									style={{ backgroundImage: `url(/img/banner/types/${type}.avif)` }}
 									onClick={() => propertyTypeSelectHandler(type)}
 									key={type}
 								>

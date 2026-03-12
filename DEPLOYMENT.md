@@ -368,3 +368,29 @@ ufw reload
 ### 4. Check browser console
 
 Open DevTools (F12) → Network tab. Look for failed requests to `/graphql`. If URL shows `undefined/graphql` or `localhost`, the frontend was built with wrong env — rebuild with correct `.env`.
+
+### 5. "Failed to connect to port 4001" — Backend not running
+
+The backend (Booking) must be running before the frontend can fetch data:
+
+```bash
+cd /var/www/booking/Booking
+docker compose up -d --build
+```
+
+Verify backend is up:
+```bash
+docker ps
+# Should show: booking, booking-mongodb
+
+curl http://localhost:4001/graphql -X POST -H "Content-Type: application/json" -d '{"query":"{ __typename }"}'
+```
+
+If MongoDB fails to start, ensure port 27017 is free. Backend needs MongoDB to run.
+
+### 6. "yarn did not complete successfully" — Docker build failure
+
+The Dockerfile now uses `npm install --legacy-peer-deps` to avoid peer dependency conflicts. Rebuild with:
+```bash
+docker compose build --no-cache
+```

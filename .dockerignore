@@ -1,0 +1,34 @@
+# Dependencies - installed fresh in container
+node_modules
+.pnp
+.pnp.js
+
+# Build output - created during build
+.next
+out
+build
+dist
+
+# Git
+.git
+.gitignore
+
+# IDE & misc
+.env*.local
+.vscode
+.idea
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docs and large files
+*.md
+!README.md
+
+# Test and dev
+coverage
+.nyc_output
+__tests__
+*.test.*
+*.spec.*
