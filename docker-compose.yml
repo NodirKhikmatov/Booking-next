@@ -4,6 +4,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        # Replace YOUR_SERVER_IP with your Vultr server IP or domain
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:4001}
+        REACT_APP_API_GRAPHQL_URL: ${REACT_APP_API_GRAPHQL_URL:-http://localhost:4001/graphql}
+        REACT_APP_API_WS: ${REACT_APP_API_WS:-ws://localhost:4001}
     ports:
       - '4000:3000'
     networks:

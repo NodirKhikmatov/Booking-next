@@ -1,4 +1,16 @@
-export const REACT_APP_API_URL = `${process.env.REACT_APP_API_URL}`;
+/** Normalize API base URL for images/uploads - fixes malformed env vars */
+function normalizeApiBaseUrl(): string {
+	const url = process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL;
+	if (!url || typeof url !== 'string') return '';
+	let cleaned = url.replace(/(https?|wss?):?\/\/+/gi, '').trim().replace(/^\/+/, '');
+	const portMatch = cleaned.match(/:(\d+)/);
+	const port = portMatch ? portMatch[1] : '4001';
+	const hostMatch = cleaned.match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|[a-zA-Z0-9][a-zA-Z0-9.-]*)/);
+	const host = hostMatch ? hostMatch[1] : 'localhost';
+	return `http://${host}:${port}`;
+}
+
+export const REACT_APP_API_URL = normalizeApiBaseUrl() || `${process.env.REACT_APP_API_URL || ''}`;
 
 export const availableOptions = ['propertyBreakfast', 'propertyCancellation'];
 

@@ -13,6 +13,35 @@ import { useMemo } from 'react';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
+/** Normalize API URL - fixes malformed env vars (e.g. http://http//, wrong port placement) */
+function normalizeApiUrl(url: string | undefined, protocol: 'http' | 'ws' = 'http'): string {
+	if (!url || typeof url !== 'string') return protocol === 'ws' ? 'ws://127.0.0.1:3007' : 'http://localhost:4001/graphql';
+	// Strip protocol prefixes (handles http://http//, ws://http//, etc.)
+	let cleaned = url.replace(/(https?|wss?):?\/\/+/gi, '').trim();
+	cleaned = cleaned.replace(/^\/+/, '');
+	// Extract port (handles /:4001 or :4001)
+	const portMatch = cleaned.match(/:(\d+)/);
+	const port = portMatch ? portMatch[1] : '4001';
+	// Extract host (IP or domain)
+	const hostMatch = cleaned.match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|[a-zA-Z0-9][a-zA-Z0-9.-]*)/);
+	const host = hostMatch ? hostMatch[1] : 'localhost';
+	// Extract path (e.g. graphql)
+	const pathMatch = cleaned.match(/\/(graphql.*)$/);
+	const path = pathMatch ? pathMatch[1] : protocol === 'http' ? 'graphql' : '';
+	const prefix = protocol === 'ws' ? 'ws://' : 'http://';
+	return path ? `${prefix}${host}:${port}/${path}` : `${prefix}${host}:${port}`;
+}
+
+function getGraphqlUrl(): string {
+	const url = process.env.REACT_APP_API_GRAPHQL_URL || process.env.NEXT_PUBLIC_API_GRAPHQL_URL;
+	return normalizeApiUrl(url, 'http');
+}
+
+function getWsUrl(): string {
+	const url = process.env.REACT_APP_API_WS || process.env.NEXT_PUBLIC_API_WS;
+	return normalizeApiUrl(url || '', 'ws') || 'ws://127.0.0.1:3007';
+}
+
 function getHeaders() {
 	const headers = {} as HeadersInit;
 	const token = getJwtToken();
@@ -85,12 +114,12 @@ function createIsomorphicLink() {
 
 		// @ts-ignore
 		const link = new createUploadLink({
-			uri: process.env.REACT_APP_API_GRAPHQL_URL,
+			uri: getGraphqlUrl(),
 		});
 
 		/* WEBSOCKET SUBSCRIPTION LINK */
 		const wsLink = new WebSocketLink({
-			uri: process.env.REACT_APP_API_WS ?? 'ws://127.0.0.1:3007',
+			uri: getWsUrl(),
 			options: {
 				reconnect: false,
 				timeout: 30000,
